@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { GraduationCap, Sparkles } from "lucide-react"
+import { GraduationCap, MapPin, Building2, Ticket, Percent, Wallet, Info } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   FieldLabel,
@@ -173,11 +173,18 @@ export const colleges: College[] = [
 ]
 
 export function matchColleges(input: CollegeInput): CollegeMatch[] {
-  const baseFiltered = colleges.filter((col) => col.streams.includes(input.stream))
+  let baseFiltered = colleges.filter((col) => col.streams.includes(input.stream));
+
+  // STRICT CITY ISOLATION: If they don't want to move, immediately dump other cities
+  if (!input.livesOutOfCity && input.homeCity.trim() !== "") {
+    baseFiltered = baseFiltered.filter(
+      (col) => col.city.toLowerCase().trim() === input.homeCity.toLowerCase().trim()
+    );
+  }
 
   return baseFiltered
     .map((college) => {
-      let scorePoints = 50
+      let scorePoints = 65
       
       if (input.interests.length > 0) {
         const matchCount = input.interests.some((interest) => {
@@ -189,15 +196,12 @@ export function matchColleges(input: CollegeInput): CollegeMatch[] {
           if (interest.includes("Economics") && lowerName.includes("economics")) return true
           return false
         })
-        if (matchCount) scorePoints += 30
+        if (matchCount) scorePoints += 20
       }
 
       const isSameCity = college.city.toLowerCase().trim() === input.homeCity.toLowerCase().trim()
-      
       if (isSameCity) {
-        scorePoints += 15
-      } else if (!input.livesOutOfCity) {
-        scorePoints -= 35
+        scorePoints += 10
       }
 
       const yearlyTuition = Math.round(college.fee / college.durationYears)
@@ -231,6 +235,14 @@ export function matchColleges(input: CollegeInput): CollegeMatch[] {
     .sort((a, b) => b.matchPercent - a.matchPercent)
 }
 
+function formatLPA(amount: number): string {
+  if (amount === 0) return "—"
+  if (amount >= 100000) {
+    return `₹${(amount / 100000).toFixed(1).replace(/\.0$/, '')} LPA`
+  }
+  return `₹${amount.toLocaleString('en-IN')}`
+}
+
 export function CollegeFinderUI() {
   const [stream, setStream] = useState<Stream | null>(null)
   const [homeCity, setHomeCity] = useState("")
@@ -248,7 +260,7 @@ export function CollegeFinderUI() {
 
   function handleCalculate() {
     if (!stream) {
-      setError("Please select your stream first.")
+      setError("Please select your stream to build matches.")
       return
     }
     setError("")
@@ -264,28 +276,16 @@ export function CollegeFinderUI() {
   }
 
   return (
-    <section id="college-finder" className="border-b border-border bg-card/50 scroll-mt-8">
-      <div className="mx-auto max-w-3xl px-6 py-16 md:py-20">
-        <div className="text-center">
-          <span className="inline-flex items-center gap-2 rounded-full bg-primary px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary-foreground">
-            College Tool
-          </span>
-          <h2 className="mt-4 font-heading text-3xl font-extrabold tracking-tight text-foreground md:text-4xl">
-            College Matching Engine
-          </h2>
-          <p className="mt-3 text-pretty leading-relaxed text-muted-foreground">
-            Find and rank top colleges based on your scores, stream, budget, and location settings.
-          </p>
-        </div>
-
-        <div className="mt-10 grid gap-7 rounded-3xl border border-border bg-card p-6 md:p-8">
+    <section id="college-finder" className="border-b border-border bg-background scroll-mt-8 pb-12">
+      <div className="mx-auto max-w-3xl px-6 py-12 md:py-16">
+        <div className="mt-6 grid gap-7 rounded-3xl border border-border bg-card p-6 md:p-8">
           <div>
             <FieldLabel>Grade 12 Stream</FieldLabel>
             <StreamSelect value={stream} onChange={setStream} />
           </div>
 
           <div>
-            <FieldLabel>Your Home City</FieldLabel>
+            <FieldLabel>What is your current home city?</FieldLabel>
             <TextField value={homeCity} onChange={setHomeCity} placeholder="e.g. Delhi, Mumbai" />
           </div>
 
@@ -295,12 +295,12 @@ export function CollegeFinderUI() {
           </div>
 
           <div>
-            <FieldLabel optional>CUET / Entrance Percentile (e.g. 95.5)</FieldLabel>
-            <TextField value={cuetPercentile} onChange={setCuetPercentile} placeholder="e.g. 98.2" />
+            <FieldLabel optional>CUET Score / Entrance Percentile</FieldLabel>
+            <TextField value={cuetPercentile} onChange={setCuetPercentile} placeholder="e.g. 99.2" />
           </div>
 
           <div>
-            <FieldLabel optional>Target Fields & Courses</FieldLabel>
+            <FieldLabel optional>Target fields of interest</FieldLabel>
             <ChipMultiSelect
               options={FIELD_OPTIONS}
               selected={interests}
@@ -310,40 +310,88 @@ export function CollegeFinderUI() {
 
           {error && <p className="text-sm font-medium text-destructive">{error}</p>}
 
-          <Button size="lg" onClick={handleCalculate} className="w-full gap-2">
-            <GraduationCap className="size-5" />
-            Find Matching Colleges
+          <Button size="lg" onClick={handleCalculate} className="w-full gap-2 rounded-xl">
+            <GraduationCap className="size-4" />
+            Find colleges for me
           </Button>
         </div>
 
         {results && (
-          <div className="mt-12">
-            <h3 className="font-heading text-xl font-bold text-foreground">
-              {results.length} Colleges Matched For You
-            </h3>
-            <div className="mt-5 grid gap-4">
+          <div className="mt-12 space-y-6">
+            <div>
+              <h3 className="font-heading text-xl font-bold text-foreground">
+                {results.length} colleges matched
+              </h3>
+              <p className="text-xs text-muted-foreground mt-1">
+                All costs are shown <span className="font-semibold text-foreground">per year</span>. Toggle the living-cost option above if you'll move cities.
+              </p>
+            </div>
+            
+            <div className="grid gap-6">
               {results.map((m) => (
-                <div key={m.college.id} className="rounded-2xl border border-border bg-background p-5 shadow-sm">
+                <div key={m.college.id} className="rounded-3xl border border-border bg-card p-6 shadow-sm">
                   <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <h4 className="font-bold text-lg text-foreground">{m.college.name}</h4>
-                      <p className="text-sm text-muted-foreground">📍 {m.college.city}</p>
+                    <div className="space-y-1">
+                      <h4 className="font-heading text-lg font-bold tracking-tight text-foreground">
+                        {m.college.name}
+                      </h4>
+                      <p className="text-sm text-muted-foreground flex items-center gap-1">
+                        <MapPin className="size-3.5 text-muted-foreground/70" /> {m.college.city}
+                      </p>
                     </div>
-                    <div className="text-right">
-                      <span className="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-semibold text-primary">
-                        {m.matchPercent}% Match
+                    <div className="inline-flex items-center justify-center rounded-full bg-secondary px-3 py-1 text-xs font-bold text-foreground border border-border">
+                      {m.matchPercent}% match
+                    </div>
+                  </div>
+
+                  <div className="mt-3 flex flex-wrap gap-1.5">
+                    {m.college.courses.map((course) => (
+                      <span key={course} className="rounded-full bg-accent/50 px-2.5 py-0.5 text-xs font-medium text-foreground">
+                        {course}
                       </span>
+                    ))}
+                  </div>
+
+                  {/* Admissions Sub-Card */}
+                  <div className="mt-4 rounded-xl border border-border/80 bg-background/40 p-4 text-xs">
+                    <div className="flex items-center justify-between font-semibold border-b border-border/50 pb-2 mb-2 text-muted-foreground">
+                      <div className="flex items-center gap-1.5 text-foreground">
+                        <Ticket className="size-3.5 text-primary" /> Admissions
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Percent className="size-3" /> Acceptance rate ~{m.college.acceptanceRate}%
+                      </div>
+                    </div>
+                    <p className="text-foreground">
+                      <span className="font-bold">{m.college.entranceExams[0]?.name}:</span> {m.college.entranceExams[0]?.cutoff}
+                      {m.admissionChance && (
+                        <span> (Your chance status: <span className="font-bold underline text-primary">{m.admissionChance}</span>)</span>
+                      )}
+                    </p>
+                  </div>
+
+                  {/* Financial Metrics Grid */}
+                  <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
+                    <div className="rounded-xl bg-background/50 p-3 border border-border/40">
+                      <span className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground/80">📁 TUITION / YR</span>
+                      <span className="mt-1 block font-heading text-sm font-bold text-foreground">{formatLPA(m.yearlyTuition)}</span>
+                    </div>
+                    <div className="rounded-xl bg-background/50 p-3 border border-border/40">
+                      <span className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground/80">🏠 LIVING / YR</span>
+                      <span className="mt-1 block font-heading text-sm font-bold text-foreground">{formatLPA(m.yearlyLiving)}</span>
+                    </div>
+                    <div className="rounded-xl bg-background/50 p-3 border border-border/40">
+                      <span className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground/80">📦 MISC / YR</span>
+                      <span className="mt-1 block font-heading text-sm font-bold text-foreground">₹{m.yearlyMisc.toLocaleString('en-IN')}</span>
+                    </div>
+                    <div className="rounded-xl bg-background/50 p-3 border border-border/40">
+                      <span className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground/80">∑ TOTAL / YR</span>
+                      <span className="mt-1 block font-heading text-sm font-bold text-foreground">{formatLPA(m.yearlyTotal)}</span>
                     </div>
                   </div>
-                  <div className="mt-4 grid grid-cols-2 gap-2 text-xs border-t border-dashed border-border pt-4 text-muted-foreground">
-                    <div>📚 Courses: {m.college.courses.join(", ")}</div>
-                    <div>💰 Est. Total Cost/Year: ₹{m.yearlyTotal.toLocaleString()}</div>
-                    {m.admissionChance && (
-                      <div className="col-span-2 mt-1">
-                        🎯 Admission Chance: <span className="font-semibold text-foreground">{m.admissionChance}</span>
-                      </div>
-                    )}
-                  </div>
+                  <p className="mt-2.5 text-[10px] text-muted-foreground/70 pl-1">
+                    Full {m.college.durationYears}-year tuition total: ₹{m.college.fee.toLocaleString('en-IN')}
+                  </p>
                 </div>
               ))}
             </div>
