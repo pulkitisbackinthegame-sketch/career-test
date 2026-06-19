@@ -1,7 +1,7 @@
 import { SiteHero } from "@/components/site-hero"
 import { FounderSection } from "@/components/founder-section"
 import { CareerFinder } from "@/components/career-finder"
-import Colleges from "@/components/college-finder"
+import { matchColleges as Colleges } from "@/components/college-finder"
 
 export default function Page() {
   return (
