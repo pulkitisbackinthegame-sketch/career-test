@@ -1,3 +1,15 @@
+"use client"
+
+import { useState } from "react"
+import { GraduationCap, Sparkles } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import {
+  FieldLabel,
+  StreamSelect,
+  ChipMultiSelect,
+  YesNoToggle,
+  TextField,
+} from "@/components/finder-controls"
 import { type Stream } from "./career-data"
 
 export type AdmissionChance = "High" | "Moderate" | "Low"
@@ -14,7 +26,7 @@ export interface College {
   city: string
   streams: Stream[]
   courses: string[]
-  fee: number // Total multi-year course fee
+  fee: number
   durationYears: number
   acceptanceRate: number
   entranceExams: EntranceExam[]
@@ -161,16 +173,13 @@ export const colleges: College[] = [
 ]
 
 export function matchColleges(input: CollegeInput): CollegeMatch[] {
-  // 1. Stream Lockout Protection
   const baseFiltered = colleges.filter((col) => col.streams.includes(input.stream))
 
   return baseFiltered
     .map((college) => {
-      let scorePoints = 50 // Start with flat base anchor
+      let scorePoints = 50
       
-      // Interest Fit check
       if (input.interests.length > 0) {
-        // Simple contextual course mapping match 
         const matchCount = input.interests.some((interest) => {
           const lowerName = college.name.toLowerCase() + " " + college.courses.join(" ").toLowerCase()
           if (interest.includes("Commerce") && (lowerName.includes("b.com") || lowerName.includes("commerce"))) return true
@@ -183,23 +192,19 @@ export function matchColleges(input: CollegeInput): CollegeMatch[] {
         if (matchCount) scorePoints += 30
       }
 
-      // 2. City Proximity Filters
       const isSameCity = college.city.toLowerCase().trim() === input.homeCity.toLowerCase().trim()
       
       if (isSameCity) {
         scorePoints += 15
       } else if (!input.livesOutOfCity) {
-        // If they refuse to move, heavily suppress out of city targets
         scorePoints -= 35
       }
 
-      // Calculate localized financial breakdown strings
       const yearlyTuition = Math.round(college.fee / college.durationYears)
       const yearlyLiving = (isSameCity && !input.livesOutOfCity) ? 0 : college.baseLivingCostPerYear
       const yearlyMisc = college.baseMiscCostPerYear
       const yearlyTotal = yearlyTuition + yearlyLiving + yearlyMisc
 
-      // 3. Admission Chance grading engine
       let admissionChance: AdmissionChance | null = null
       if (input.cuetPercentile !== null) {
         const required = college.entranceExams[0]?.minPercentileNeeded || 50
@@ -225,19 +230,125 @@ export function matchColleges(input: CollegeInput): CollegeMatch[] {
     .filter((m) => m.matchPercent >= 30)
     .sort((a, b) => b.matchPercent - a.matchPercent)
 }
+
 export function CollegeFinderUI() {
+  const [stream, setStream] = useState<Stream | null>(null)
+  const [homeCity, setHomeCity] = useState("")
+  const [livesOutOfCity, setLivesOutOfCity] = useState(false)
+  const [cuetPercentile, setCuetPercentile] = useState("")
+  const [interests, setInterests] = useState<string[]>([])
+  const [results, setResults] = useState<CollegeMatch[] | null>(null)
+  const [error, setError] = useState("")
+
+  function handleToggle(value: string) {
+    setInterests((prev) =>
+      prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]
+    )
+  }
+
+  function handleCalculate() {
+    if (!stream) {
+      setError("Please select your stream first.")
+      return
+    }
+    setError("")
+
+    const matches = matchColleges({
+      stream,
+      interests,
+      homeCity,
+      livesOutOfCity,
+      cuetPercentile: cuetPercentile ? parseFloat(cuetPercentile) : null,
+    })
+    setResults(matches)
+  }
+
   return (
     <section id="college-finder" className="border-b border-border bg-card/50 scroll-mt-8">
-      <div className="mx-auto max-w-3xl px-6 py-16 md:py-20 text-center">
-        <span className="inline-flex items-center gap-2 rounded-full bg-primary px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary-foreground">
-          Premium Addon
-        </span>
-        <h2 className="mt-4 font-heading text-3xl font-extrabold tracking-tight text-foreground md:text-4xl">
-          College Matching Engine
-        </h2>
-        <p className="mt-3 max-w-xl mx-auto text-pretty leading-relaxed text-muted-foreground">
-          Your stream and scores are synchronized. Verified matching targets are active across Delhi, Mumbai, and Bangalore.
-        </p>
+      <div className="mx-auto max-w-3xl px-6 py-16 md:py-20">
+        <div className="text-center">
+          <span className="inline-flex items-center gap-2 rounded-full bg-primary px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary-foreground">
+            College Tool
+          </span>
+          <h2 className="mt-4 font-heading text-3xl font-extrabold tracking-tight text-foreground md:text-4xl">
+            College Matching Engine
+          </h2>
+          <p className="mt-3 text-pretty leading-relaxed text-muted-foreground">
+            Find and rank top colleges based on your scores, stream, budget, and location settings.
+          </p>
+        </div>
+
+        <div className="mt-10 grid gap-7 rounded-3xl border border-border bg-card p-6 md:p-8">
+          <div>
+            <FieldLabel>Grade 12 Stream</FieldLabel>
+            <StreamSelect value={stream} onChange={setStream} />
+          </div>
+
+          <div>
+            <FieldLabel>Your Home City</FieldLabel>
+            <TextField value={homeCity} onChange={setHomeCity} placeholder="e.g. Delhi, Mumbai" />
+          </div>
+
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <FieldLabel>Are you willing to move outside your city?</FieldLabel>
+            <YesNoToggle value={livesOutOfCity} onChange={setLivesOutOfCity} />
+          </div>
+
+          <div>
+            <FieldLabel optional>CUET / Entrance Percentile (e.g. 95.5)</FieldLabel>
+            <TextField value={cuetPercentile} onChange={setCuetPercentile} placeholder="e.g. 98.2" />
+          </div>
+
+          <div>
+            <FieldLabel optional>Target Fields & Courses</FieldLabel>
+            <ChipMultiSelect
+              options={FIELD_OPTIONS}
+              selected={interests}
+              onToggle={handleToggle}
+            />
+          </div>
+
+          {error && <p className="text-sm font-medium text-destructive">{error}</p>}
+
+          <Button size="lg" onClick={handleCalculate} className="w-full gap-2">
+            <GraduationCap className="size-5" />
+            Find Matching Colleges
+          </Button>
+        </div>
+
+        {results && (
+          <div className="mt-12">
+            <h3 className="font-heading text-xl font-bold text-foreground">
+              {results.length} Colleges Matched For You
+            </h3>
+            <div className="mt-5 grid gap-4">
+              {results.map((m) => (
+                <div key={m.college.id} className="rounded-2xl border border-border bg-background p-5 shadow-sm">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <h4 className="font-bold text-lg text-foreground">{m.college.name}</h4>
+                      <p className="text-sm text-muted-foreground">📍 {m.college.city}</p>
+                    </div>
+                    <div className="text-right">
+                      <span className="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-semibold text-primary">
+                        {m.matchPercent}% Match
+                      </span>
+                    </div>
+                  </div>
+                  <div className="mt-4 grid grid-cols-2 gap-2 text-xs border-t border-dashed border-border pt-4 text-muted-foreground">
+                    <div>📚 Courses: {m.college.courses.join(", ")}</div>
+                    <div>💰 Est. Total Cost/Year: ₹{m.yearlyTotal.toLocaleString()}</div>
+                    {m.admissionChance && (
+                      <div className="col-span-2 mt-1">
+                        🎯 Admission Chance: <span className="font-semibold text-foreground">{m.admissionChance}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </section>
   )
