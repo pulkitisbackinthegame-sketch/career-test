@@ -225,3 +225,20 @@ export function matchColleges(input: CollegeInput): CollegeMatch[] {
     .filter((m) => m.matchPercent >= 30)
     .sort((a, b) => b.matchPercent - a.matchPercent)
 }
+export function CollegeFinderUI() {
+  return (
+    <section id="college-finder" className="border-b border-border bg-card/50 scroll-mt-8">
+      <div className="mx-auto max-w-3xl px-6 py-16 md:py-20 text-center">
+        <span className="inline-flex items-center gap-2 rounded-full bg-primary px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary-foreground">
+          Premium Addon
+        </span>
+        <h2 className="mt-4 font-heading text-3xl font-extrabold tracking-tight text-foreground md:text-4xl">
+          College Matching Engine
+        </h2>
+        <p className="mt-3 max-w-xl mx-auto text-pretty leading-relaxed text-muted-foreground">
+          Your stream and scores are synchronized. Verified matching targets are active across Delhi, Mumbai, and Bangalore.
+        </p>
+      </div>
+    </section>
+  )
+}
