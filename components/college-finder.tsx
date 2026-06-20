@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { GraduationCap, MapPin, Building2, Ticket, Percent, Wallet, Info } from "lucide-react"
+import { GraduationCap, MapPin, Ticket, Percent, Wallet } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   FieldLabel,
@@ -175,7 +175,6 @@ export const colleges: College[] = [
 export function matchColleges(input: CollegeInput): CollegeMatch[] {
   let baseFiltered = colleges.filter((col) => col.streams.includes(input.stream));
 
-  // STRICT CITY ISOLATION: If they don't want to move, immediately dump other cities
   if (!input.livesOutOfCity && input.homeCity.trim() !== "") {
     baseFiltered = baseFiltered.filter(
       (col) => col.city.toLowerCase().trim() === input.homeCity.toLowerCase().trim()
@@ -277,7 +276,19 @@ export function CollegeFinderUI() {
 
   return (
     <section id="college-finder" className="border-b border-border bg-background scroll-mt-8 pb-12">
-      <div className="mx-auto max-w-3xl px-6 py-12 md:py-16">
+      <div className="mx-auto max-w-3xl px-6 py-6 md:py-10">
+        
+        {/* --- HERE IS THE ADDED TITLE HEADER --- */}
+        <div className="text-center mb-8">
+          <h2 className="font-heading text-2xl font-extrabold tracking-tight text-foreground md:text-3xl">
+            College Matching Engine
+          </h2>
+          <p className="mt-2 max-w-xl mx-auto text-pretty leading-relaxed text-muted-foreground text-xs md:text-sm">
+            Discover institutional options based on your home city, stream choices, and target entrance requirements.
+          </p>
+        </div>
+        {/* -------------------------------------- */}
+
         <div className="mt-6 grid gap-7 rounded-3xl border border-border bg-card p-6 md:p-8">
           <div>
             <FieldLabel>Grade 12 Stream</FieldLabel>
@@ -352,7 +363,6 @@ export function CollegeFinderUI() {
                     ))}
                   </div>
 
-                  {/* Admissions Sub-Card */}
                   <div className="mt-4 rounded-xl border border-border/80 bg-background/40 p-4 text-xs">
                     <div className="flex items-center justify-between font-semibold border-b border-border/50 pb-2 mb-2 text-muted-foreground">
                       <div className="flex items-center gap-1.5 text-foreground">
@@ -370,7 +380,6 @@ export function CollegeFinderUI() {
                     </p>
                   </div>
 
-                  {/* Financial Metrics Grid */}
                   <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
                     <div className="rounded-xl bg-background/50 p-3 border border-border/40">
                       <span className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground/80">📁 TUITION / YR</span>
@@ -385,19 +394,4 @@ export function CollegeFinderUI() {
                       <span className="mt-1 block font-heading text-sm font-bold text-foreground">₹{m.yearlyMisc.toLocaleString('en-IN')}</span>
                     </div>
                     <div className="rounded-xl bg-background/50 p-3 border border-border/40">
-                      <span className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground/80">∑ TOTAL / YR</span>
-                      <span className="mt-1 block font-heading text-sm font-bold text-foreground">{formatLPA(m.yearlyTotal)}</span>
-                    </div>
-                  </div>
-                  <p className="mt-2.5 text-[10px] text-muted-foreground/70 pl-1">
-                    Full {m.college.durationYears}-year tuition total: ₹{m.college.fee.toLocaleString('en-IN')}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
-    </section>
-  )
-}
+                      <span className="block text-[10px] font-bold uppercase tracking-wider text
