@@ -237,9 +237,9 @@ export function matchColleges(input: CollegeInput): CollegeMatch[] {
 function formatLPA(amount: number): string {
   if (amount === 0) return "—"
   if (amount >= 100000) {
-    return `₹${(amount / 100000).toFixed(1).replace(/\.0$/, '')} LPA`
+    return `₹${(amount / 100000).toFixed(1).replace(/\.0$/, "")} LPA`
   }
-  return `₹${amount.toLocaleString('en-IN')}`
+  return `₹${amount.toLocaleString("en-IN")}`
 }
 
 export function CollegeFinderUI() {
@@ -278,7 +278,6 @@ export function CollegeFinderUI() {
     <section id="college-finder" className="border-b border-border bg-background scroll-mt-8 pb-12">
       <div className="mx-auto max-w-3xl px-6 py-6 md:py-10">
         
-        {/* --- HERE IS THE ADDED TITLE HEADER --- */}
         <div className="text-center mb-8">
           <h2 className="font-heading text-2xl font-extrabold tracking-tight text-foreground md:text-3xl">
             College Matching Engine
@@ -287,7 +286,6 @@ export function CollegeFinderUI() {
             Discover institutional options based on your home city, stream choices, and target entrance requirements.
           </p>
         </div>
-        {/* -------------------------------------- */}
 
         <div className="mt-6 grid gap-7 rounded-3xl border border-border bg-card p-6 md:p-8">
           <div>
@@ -334,7 +332,7 @@ export function CollegeFinderUI() {
                 {results.length} colleges matched
               </h3>
               <p className="text-xs text-muted-foreground mt-1">
-                All costs are shown <span className="font-semibold text-foreground">per year</span>. Toggle the living-cost option above if you'll move cities.
+                All costs are shown <span className="font-semibold text-foreground">per year</span>. Toggle the living-cost option above if you will move cities.
               </p>
             </div>
             
@@ -391,7 +389,22 @@ export function CollegeFinderUI() {
                     </div>
                     <div className="rounded-xl bg-background/50 p-3 border border-border/40">
                       <span className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground/80">📦 MISC / YR</span>
-                      <span className="mt-1 block font-heading text-sm font-bold text-foreground">₹{m.yearlyMisc.toLocaleString('en-IN')}</span>
+                      <span className="mt-1 block font-heading text-sm font-bold text-foreground">₹{m.yearlyMisc.toLocaleString("en-IN")}</span>
                     </div>
                     <div className="rounded-xl bg-background/50 p-3 border border-border/40">
-                      <span className="block text-[10px] font-bold uppercase tracking-wider text
+                      <span className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground/80">∑ TOTAL / YR</span>
+                      <span className="mt-1 block font-heading text-sm font-bold text-foreground">{formatLPA(m.yearlyTotal)}</span>
+                    </div>
+                  </div>
+                  <p className="mt-2.5 text-[10px] text-muted-foreground/70 pl-1">
+                    Full {m.college.durationYears}-year tuition total: ₹{m.college.fee.toLocaleString("en-IN")}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
+  )
+}
