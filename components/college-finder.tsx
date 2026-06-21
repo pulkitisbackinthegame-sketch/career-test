@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { GraduationCap, MapPin, Ticket, Percent } from "lucide-react"
+import { Button } from "@/components/ui/button"
 import { type Stream } from "@/lib/career-data"
 import {
   FieldLabel,
@@ -321,7 +322,6 @@ export const colleges: College[] = [
 ]
 
 export function matchColleges(input: CollegeInput): CollegeMatch[] {
-  // RULE 1: Strict filtering based on secondary stream priority
   let baseFiltered = colleges.filter((col) => col.streams.includes(input.stream));
 
   if (!input.livesOutOfCity && input.homeCity.trim() !== "") {
@@ -334,7 +334,6 @@ export function matchColleges(input: CollegeInput): CollegeMatch[] {
     .map((college) => {
       let scorePoints = 65
       
-      // RULE 2: Interests rank items to top but don't delete missed parameters
       if (input.interests.length > 0) {
         const matchCount = input.interests.some((interest) => {
           const lowerName = college.name.toLowerCase() + " " + college.courses.join(" ").toLowerCase()
@@ -563,5 +562,3 @@ export function CollegeFinderUI() {
     </section>
   )
 }
-
-```
