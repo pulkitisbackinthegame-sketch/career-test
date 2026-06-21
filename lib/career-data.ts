@@ -1,699 +1,192 @@
 export type Stream = "Commerce" | "Science" | "Arts/Humanities"
 
-export type AiLevel = "Low" | "Medium" | "High"
-
-export type DifficultyLevel = "Easy" | "Moderate" | "Hard"
-
-export interface SalaryBand {
-  amount: number
-  years: string
+export interface SalaryRange {
+  entry: string
+  mid: string
+  senior: string
 }
 
-export interface Career {
+export interface CareerPath {
   id: string
   title: string
-  whatTheyDo: string
-  marketDemand: "Very High" | "High" | "Growing" | "Moderate"
-  aiVulnerability: {
-    score: number
-    level: AiLevel
-    reason: string
-  }
-  difficulty: {
-    score: number
-    level: DifficultyLevel
-    reason: string
-  }
-  workHours: string
-  salary: {
-    entry: SalaryBand
-    mid: SalaryBand
-    senior: SalaryBand
-  }
-  keySkills: string[]
-  companies: string[]
-  path: string[]
+  description: string
   streams: Stream[]
-  relatedCourses: string[]
-  relatedSkills: string[]
-  relatedInterests: string[]
-  mbaBoost: boolean
+  interests: string[]
+  aiRisk: "Low" | "Medium" | "High"
+  aiRiskPercent: number
+  aiRiskDesc: string
+  difficulty: "Easy" | "Moderate" | "Hard"
+  difficultyPercent: number
+  difficultyDesc: string
+  demand: "Low" | "Moderate" | "High"
+  workHours: string
+  keywords: string[]
+  skills: string[]
+  salary: SalaryRange
 }
 
-export const INTEREST_OPTIONS = [
-  "Finance & Markets",
-  "Accounting",
-  "Economics",
-  "Business & Management",
-  "Marketing & Branding",
-  "Data & Analytics",
-  "Technology & Coding",
-  "Design & Creativity",
-  "Writing & Communication",
-  "Law & Policy",
-  "Psychology & People",
-  "Mathematics & Logic",
-  "Science & Research",
-  "Healthcare",
-  "Entrepreneurship",
-  "Media & Content",
-]
-
-export const SKILL_OPTIONS = [
-  "Excel / Spreadsheets",
-  "Python / Programming",
-  "SQL / Databases",
-  "Public Speaking",
-  "Writing",
-  "Graphic Design",
-  "Financial Modeling",
-  "Data Analysis",
-  "Leadership",
-  "Negotiation",
-  "Research",
-  "Social Media",
-]
-
-export const STREAMS: Stream[] = ["Commerce", "Science", "Arts/Humanities"]
-
-export const careers: Career[] = [
+export const careerPaths: CareerPath[] = [
+  // --- LAW & LEGAL STUDIES ---
   {
-    id: "investment-banker",
-    title: "Investment Banker",
-    whatTheyDo: "Helps companies raise money and advises on mergers, acquisitions and big financial deals.",
-    marketDemand: "High",
-    aiVulnerability: {
-      score: 35,
-      level: "Medium",
-      reason: "AI automates a lot of modelling and research grunt-work, but high-stakes deal judgment and client relationships still need humans.",
-    },
-    difficulty: {
-      score: 88,
-      level: "Hard",
-      reason: "Extremely competitive entry, gruelling hours and constant pressure to perform on multi-crore deals.",
-    },
-    workHours: "60–90 hrs/week — among the most demanding careers, with late nights and weekend work during live deals.",
-    salary: {
-      entry: { amount: 1200000, years: "0–2 yrs" },
-      mid: { amount: 3500000, years: "3–7 yrs" },
-      senior: { amount: 9000000, years: "8+ yrs" },
-    },
-    keySkills: ["Financial Modeling", "Valuation", "Excel", "Negotiation", "Communication"],
-    companies: ["Goldman Sachs", "JPMorgan", "Morgan Stanley", "Kotak Investment Banking", "Avendus"],
-    path: [
-      "Class 12 (Commerce preferred)",
-      "Bachelor's in Commerce / Economics / BBA",
-      "Internships in finance / equity research",
-      "MBA Finance from a top school (IIM / ISB) — big advantage",
-      "Analyst → Associate → VP → MD",
-    ],
-    streams: ["Commerce", "Science"],
-    relatedCourses: ["b.com", "bba", "economics", "finance", "mba", "ca"],
-    relatedSkills: ["Financial Modeling", "Excel / Spreadsheets", "Negotiation", "Data Analysis"],
-    relatedInterests: ["Finance & Markets", "Economics", "Business & Management", "Mathematics & Logic"],
-    mbaBoost: true,
-  },
-  {
-    id: "chartered-accountant",
-    title: "Chartered Accountant (CA)",
-    whatTheyDo: "Audits accounts, handles taxation and ensures a business's finances are accurate and compliant.",
-    marketDemand: "Very High",
-    aiVulnerability: {
-      score: 55,
-      level: "High",
-      reason: "Routine bookkeeping, reconciliation and basic tax filing are increasingly automated, pushing CAs toward advisory work.",
-    },
-    difficulty: {
-      score: 82,
-      level: "Hard",
-      reason: "The CA exams have single-digit pass rates and the qualification takes years of study alongside articleship.",
-    },
-    workHours: "45–60 hrs/week, spiking sharply during audit and tax-filing seasons.",
-    salary: {
-      entry: { amount: 800000, years: "0–2 yrs" },
-      mid: { amount: 1800000, years: "3–7 yrs" },
-      senior: { amount: 5000000, years: "8+ yrs" },
-    },
-    keySkills: ["Accounting", "Taxation", "Auditing", "Excel", "Compliance"],
-    companies: ["Deloitte", "PwC", "EY", "KPMG", "Grant Thornton"],
-    path: [
-      "Class 12 (Commerce)",
-      "Register for CA Foundation",
-      "Clear Intermediate + Articleship (3 yrs)",
-      "Clear CA Final",
-      "Audit / Tax / Advisory roles",
-    ],
-    streams: ["Commerce"],
-    relatedCourses: ["b.com", "ca", "commerce", "accounting"],
-    relatedSkills: ["Excel / Spreadsheets", "Financial Modeling", "Data Analysis"],
-    relatedInterests: ["Accounting", "Finance & Markets", "Business & Management"],
-    mbaBoost: false,
-  },
-  {
-    id: "data-scientist",
-    title: "Data Scientist",
-    whatTheyDo: "Finds patterns in data and builds models that help companies make smarter decisions.",
-    marketDemand: "Very High",
-    aiVulnerability: {
-      score: 25,
-      level: "Low",
-      reason: "Data scientists build and steer the AI itself; demand grows as more companies adopt machine learning.",
-    },
-    difficulty: {
-      score: 62,
-      level: "Moderate",
-      reason: "Needs strong maths and coding plus continuous learning, but the path is flexible and self-study friendly.",
-    },
-    workHours: "40–50 hrs/week, generally predictable with occasional deadline crunches.",
-    salary: {
-      entry: { amount: 1000000, years: "0–2 yrs" },
-      mid: { amount: 2400000, years: "3–6 yrs" },
-      senior: { amount: 6000000, years: "7+ yrs" },
-    },
-    keySkills: ["Python", "SQL", "Statistics", "Machine Learning", "Data Visualization"],
-    companies: ["Google", "Amazon", "Microsoft", "Flipkart", "Razorpay"],
-    path: [
-      "Class 12 (Science / Commerce with Maths)",
-      "Bachelor's in CS / Statistics / Maths / Engineering",
-      "Learn Python, SQL & ML through projects",
-      "Internships + a strong portfolio",
-      "Analyst → Data Scientist → Senior / Lead",
-    ],
-    streams: ["Science", "Commerce"],
-    relatedCourses: ["b.tech", "computer science", "statistics", "mathematics", "bca", "data science"],
-    relatedSkills: ["Python / Programming", "SQL / Databases", "Data Analysis", "Excel / Spreadsheets"],
-    relatedInterests: ["Data & Analytics", "Technology & Coding", "Mathematics & Logic", "Science & Research"],
-    mbaBoost: false,
-  },
-  {
-    id: "software-engineer",
-    title: "Software Engineer",
-    whatTheyDo: "Designs, writes and maintains the code that powers apps, websites and systems.",
-    marketDemand: "Very High",
-    aiVulnerability: {
-      score: 40,
-      level: "Medium",
-      reason: "AI speeds up coding and may replace routine tasks, but system design, problem-solving and judgment remain in demand.",
-    },
-    difficulty: {
-      score: 60,
-      level: "Moderate",
-      reason: "Competitive interviews and constant upskilling, but you can break in through self-taught projects and a strong portfolio.",
-    },
-    workHours: "40–50 hrs/week, with occasional crunch close to releases.",
-    salary: {
-      entry: { amount: 900000, years: "0–2 yrs" },
-      mid: { amount: 2500000, years: "3–6 yrs" },
-      senior: { amount: 7000000, years: "7+ yrs" },
-    },
-    keySkills: ["Programming", "Data Structures", "System Design", "Problem Solving", "Git"],
-    companies: ["Google", "Microsoft", "Atlassian", "Zomato", "Swiggy"],
-    path: [
-      "Class 12 (Science with Maths)",
-      "B.Tech / BCA / B.Sc CS",
-      "Build projects & practice DSA",
-      "Internships + open-source",
-      "SDE-1 → SDE-2 → Senior → Staff",
-    ],
-    streams: ["Science"],
-    relatedCourses: ["b.tech", "bca", "computer science", "engineering", "b.sc"],
-    relatedSkills: ["Python / Programming", "SQL / Databases", "Data Analysis"],
-    relatedInterests: ["Technology & Coding", "Mathematics & Logic", "Data & Analytics"],
-    mbaBoost: false,
-  },
-  {
-    id: "product-manager",
-    title: "Product Manager",
-    whatTheyDo: "Decides what a product should do and coordinates teams to build and ship it.",
-    marketDemand: "High",
-    aiVulnerability: {
-      score: 20,
-      level: "Low",
-      reason: "Requires cross-team leadership, user empathy and strategic trade-offs that AI cannot make on its own.",
-    },
-    difficulty: {
-      score: 66,
-      level: "Moderate",
-      reason: "Rarely an entry-level role — you usually need a few years in tech, design or analytics before moving in.",
-    },
-    workHours: "45–55 hrs/week, meeting-heavy with frequent context-switching.",
-    salary: {
-      entry: { amount: 1500000, years: "0–3 yrs" },
-      mid: { amount: 3500000, years: "4–8 yrs" },
-      senior: { amount: 9000000, years: "9+ yrs" },
-    },
-    keySkills: ["Product Strategy", "Communication", "Data Analysis", "Leadership", "User Research"],
-    companies: ["Google", "Flipkart", "Razorpay", "CRED", "PhonePe"],
-    path: [
-      "Class 12 (any stream)",
-      "Bachelor's (Engineering / Business common)",
-      "Work in tech / analytics / design",
-      "MBA (IIM / ISB) helps for a fast track",
-      "APM → PM → Senior PM → Director",
-    ],
-    streams: ["Commerce", "Science", "Arts/Humanities"],
-    relatedCourses: ["bba", "b.tech", "mba", "economics", "design"],
-    relatedSkills: ["Leadership", "Data Analysis", "Public Speaking", "Negotiation"],
-    relatedInterests: ["Business & Management", "Technology & Coding", "Data & Analytics", "Entrepreneurship"],
-    mbaBoost: true,
-  },
-  {
-    id: "digital-marketer",
-    title: "Digital Marketing Specialist",
-    whatTheyDo: "Promotes brands online through ads, social media, SEO and content to attract customers.",
-    marketDemand: "High",
-    aiVulnerability: {
-      score: 60,
-      level: "High",
-      reason: "AI tools now generate copy, creatives and ad targeting, automating much of routine campaign execution.",
-    },
-    difficulty: {
-      score: 35,
-      level: "Easy",
-      reason: "One of the most accessible careers — you can start with free certifications and a few live campaigns.",
-    },
-    workHours: "40–48 hrs/week, busier around launches and campaign deadlines.",
-    salary: {
-      entry: { amount: 450000, years: "0–2 yrs" },
-      mid: { amount: 1100000, years: "3–6 yrs" },
-      senior: { amount: 3000000, years: "7+ yrs" },
-    },
-    keySkills: ["SEO", "Social Media", "Content", "Analytics", "Paid Ads"],
-    companies: ["Dentsu", "Ogilvy", "Nykaa", "Zomato", "Schbang"],
-    path: [
-      "Class 12 (any stream)",
-      "Bachelor's in Marketing / Mass Comm / any field",
-      "Certifications (Google, Meta) + live campaigns",
-      "Build a portfolio of results",
-      "Executive → Manager → Head of Growth",
-    ],
-    streams: ["Commerce", "Arts/Humanities", "Science"],
-    relatedCourses: ["bba", "mass communication", "marketing", "b.com", "journalism"],
-    relatedSkills: ["Social Media", "Writing", "Data Analysis", "Graphic Design"],
-    relatedInterests: ["Marketing & Branding", "Media & Content", "Design & Creativity", "Writing & Communication"],
-    mbaBoost: true,
-  },
-  {
-    id: "management-consultant",
-    title: "Management Consultant",
-    whatTheyDo: "Advises companies on solving big problems and improving how their business runs.",
-    marketDemand: "High",
-    aiVulnerability: {
-      score: 30,
-      level: "Medium",
-      reason: "AI handles research and analysis, but framing problems and persuading leadership stays a human strength.",
-    },
-    difficulty: {
-      score: 80,
-      level: "Hard",
-      reason: "Top firms recruit from a handful of colleges and MBAs, with notoriously tough case interviews.",
-    },
-    workHours: "55–80 hrs/week with heavy travel and tight client deadlines.",
-    salary: {
-      entry: { amount: 1400000, years: "0–2 yrs" },
-      mid: { amount: 3500000, years: "3–7 yrs" },
-      senior: { amount: 10000000, years: "8+ yrs" },
-    },
-    keySkills: ["Problem Solving", "Communication", "Analytics", "Presentation", "Leadership"],
-    companies: ["McKinsey", "BCG", "Bain", "Deloitte", "Kearney"],
-    path: [
-      "Class 12 (any stream)",
-      "Bachelor's (top college helps)",
-      "Internship in consulting / strategy",
-      "MBA from IIM / ISB — major advantage",
-      "Analyst → Consultant → Manager → Partner",
-    ],
-    streams: ["Commerce", "Science", "Arts/Humanities"],
-    relatedCourses: ["bba", "economics", "b.tech", "mba", "b.com"],
-    relatedSkills: ["Leadership", "Public Speaking", "Data Analysis", "Negotiation"],
-    relatedInterests: ["Business & Management", "Economics", "Entrepreneurship", "Data & Analytics"],
-    mbaBoost: true,
-  },
-  {
-    id: "lawyer",
+    id: "corporate-lawyer",
     title: "Corporate Lawyer",
-    whatTheyDo: "Advises businesses on contracts, compliance and legal risk in their deals and operations.",
-    marketDemand: "High",
-    aiVulnerability: {
-      score: 45,
-      level: "Medium",
-      reason: "AI drafts and reviews routine documents, but negotiation, courtroom work and complex advice need lawyers.",
-    },
-    difficulty: {
-      score: 75,
-      level: "Hard",
-      reason: "Cracking a top law school via CLAT and then a tier-1 firm is highly competitive and demanding.",
-    },
-    workHours: "50–70 hrs/week, with late nights when deals are closing.",
-    salary: {
-      entry: { amount: 1000000, years: "0–3 yrs" },
-      mid: { amount: 2500000, years: "4–8 yrs" },
-      senior: { amount: 7000000, years: "9+ yrs" },
-    },
-    keySkills: ["Legal Research", "Drafting", "Negotiation", "Communication", "Attention to Detail"],
-    companies: ["Cyril Amarchand", "Khaitan & Co", "AZB & Partners", "Trilegal", "Shardul Amarchand"],
-    path: [
-      "Class 12 (any stream)",
-      "5-year integrated LLB (BA/BBA LLB) or 3-year LLB",
-      "Internships at law firms",
-      "Clear bar exam",
-      "Associate → Senior Associate → Partner",
-    ],
-    streams: ["Arts/Humanities", "Commerce", "Science"],
-    relatedCourses: ["llb", "law", "ba", "bba"],
-    relatedSkills: ["Research", "Writing", "Negotiation", "Public Speaking"],
-    relatedInterests: ["Law & Policy", "Writing & Communication", "Business & Management"],
-    mbaBoost: false,
+    description: "Advises businesses on legal rights, obligations, and relations, specializing in contract, tax, and merger compliance.",
+    streams: ["Commerce", "Arts/Humanities", "Science"],
+    interests: ["Law & Policy", "Business & Management"],
+    aiRisk: "Medium", aiRiskPercent: 45,
+    aiRiskDesc: "AI drafts routine contracts, but complex courtroom litigation and strategic negotiation require human lawyers.",
+    difficulty: "Hard", difficultyPercent: 75,
+    difficultyDesc: "Requires cracking top law schools via CLAT/AILET followed by rigorous, competitive study.",
+    demand: "High", workHours: "50-70 hrs/week",
+    keywords: ["clat", "llb", "law", "corporate law", "ba llb", "bba llb"],
+    skills: ["Negotiation", "Legal Drafting", "Analytical Thinking", "Public Speaking"],
+    salary: { entry: "8-12 LPA", mid: "20-35 LPA", senior: "60-90+ LPA" }
   },
   {
-    id: "ux-designer",
-    title: "UX / Product Designer",
-    whatTheyDo: "Designs how apps and websites look and feel so they're easy and enjoyable to use.",
-    marketDemand: "High",
-    aiVulnerability: {
-      score: 38,
-      level: "Medium",
-      reason: "AI assists with visuals and prototypes, but understanding users and crafting experiences remains human-led.",
-    },
-    difficulty: {
-      score: 52,
-      level: "Moderate",
-      reason: "Portfolio-driven and learnable without a formal degree, though standing out takes strong case studies.",
-    },
-    workHours: "40–45 hrs/week — generally one of the more balanced tech roles.",
-    salary: {
-      entry: { amount: 600000, years: "0–2 yrs" },
-      mid: { amount: 1600000, years: "3–6 yrs" },
-      senior: { amount: 4500000, years: "7+ yrs" },
-    },
-    keySkills: ["Figma", "User Research", "Visual Design", "Prototyping", "Empathy"],
-    companies: ["Google", "Razorpay", "CRED", "Swiggy", "Microsoft"],
-    path: [
-      "Class 12 (any stream)",
-      "Design degree (B.Des) or self-taught + portfolio",
-      "Learn Figma & UX fundamentals",
-      "Build case studies",
-      "Designer → Senior → Lead → Design Manager",
-    ],
-    streams: ["Arts/Humanities", "Science", "Commerce"],
-    relatedCourses: ["b.des", "design", "fine arts", "hci"],
-    relatedSkills: ["Graphic Design", "Research", "Writing"],
-    relatedInterests: ["Design & Creativity", "Technology & Coding", "Psychology & People"],
-    mbaBoost: false,
+    id: "litigation-lawyer",
+    title: "Criminal / Civil Litigator",
+    description: "Represents clients in court trials, arguing cases, conducting cross-examinations, and managing legal disputes.",
+    streams: ["Arts/Humanities", "Commerce", "Science"],
+    interests: ["Law & Policy", "Writing & Communication"],
+    aiRisk: "Low", aiRiskPercent: 20,
+    aiRiskDesc: "Courtroom advocacy, judging human behavior, and spontaneous legal arguments cannot be replicated by AI.",
+    difficulty: "Hard", difficultyPercent: 80,
+    difficultyDesc: "Takes years to build an independent practice and reputation in district or high courts.",
+    demand: "High", workHours: "45-65 hrs/week",
+    keywords: ["lawyer", "advocate", "clat", "llb", "court", "ba llb"],
+    skills: ["Courtroom Advocacy", "Cross Examination", "Legal Research", "Storytelling"],
+    salary: { entry: "4-7 LPA", mid: "12-25 LPA", senior: "50-100+ LPA" }
   },
+
+  // --- ECONOMICS & POLICY ---
   {
     id: "economist",
     title: "Economist / Policy Analyst",
-    whatTheyDo: "Studies economic data and trends to advise governments, banks or companies on decisions.",
-    marketDemand: "Moderate",
-    aiVulnerability: {
-      score: 30,
-      level: "Medium",
-      reason: "AI crunches data faster, but interpreting policy implications and advising leaders needs human judgment.",
-    },
-    difficulty: {
-      score: 64,
-      level: "Moderate",
-      reason: "Usually needs a master's from a strong institute, and research roles can be competitive.",
-    },
-    workHours: "40–45 hrs/week, steady and largely predictable.",
-    salary: {
-      entry: { amount: 700000, years: "0–2 yrs" },
-      mid: { amount: 1800000, years: "3–7 yrs" },
-      senior: { amount: 4500000, years: "8+ yrs" },
-    },
-    keySkills: ["Economics", "Statistics", "Research", "Writing", "Data Analysis"],
-    companies: ["RBI", "World Bank", "NITI Aayog", "CRISIL", "ICRA"],
-    path: [
-      "Class 12 (Commerce / Arts with Economics)",
-      "BA / B.Sc Economics",
-      "MA / M.Sc Economics (DSE, JNU, ISI)",
-      "Research / policy internships",
-      "Analyst → Economist → Senior Economist",
-    ],
-    streams: ["Commerce", "Arts/Humanities", "Science"],
-    relatedCourses: ["economics", "ba", "b.sc", "statistics"],
-    relatedSkills: ["Research", "Data Analysis", "Writing", "Excel / Spreadsheets"],
-    relatedInterests: ["Economics", "Law & Policy", "Data & Analytics", "Science & Research"],
-    mbaBoost: false,
+    description: "Studies data trends and creates frameworks to advise governments, central banks, and corporate blocks on financial policies.",
+    streams: ["Arts/Humanities", "Commerce"],
+    interests: ["Economics", "Law & Policy", "Data & Analytics"],
+    aiRisk: "Medium", aiRiskPercent: 35,
+    aiRiskDesc: "AI crunches data faster, but human judgment is vital to interpret policy implications and real-world behavior.",
+    difficulty: "Moderate", difficultyPercent: 65,
+    difficultyDesc: "Usually requires a strong master's degree or Ph.D. from premium institutes for core advisory roles.",
+    demand: "Moderate", workHours: "40-50 hrs/week",
+    keywords: ["economics", "eco hons", "ba eco", "policy", "analyst"],
+    skills: ["Statistical Modeling", "Economic Theory", "Data Analytics", "Report Writing"],
+    salary: { entry: "6-9 LPA", mid: "15-26 LPA", senior: "40-75 LPA" }
+  },
+
+  // --- COMMERCE & FINANCE ---
+  {
+    id: "chartered-accountant",
+    title: "Chartered Accountant (CA)",
+    description: "Manages financial auditing, taxation, corporate finance, and accounting systems for businesses and individuals.",
+    streams: ["Commerce"],
+    interests: ["Accounting", "Finance & Markets"],
+    aiRisk: "Medium", aiRiskPercent: 40,
+    aiRiskDesc: "Basic bookkeeping is automated, but complex tax planning and auditing strategies require certified professionals.",
+    difficulty: "Hard", difficultyPercent: 90,
+    difficultyDesc: "Known for an exceptionally low passing percentage across Foundation, Intermediate, and Final exams.",
+    demand: "High", workHours: "45-60 hrs/week (Peak during tax season)",
+    keywords: ["ca", "chartered accountant", "b.com", "audit", "taxation"],
+    skills: ["Tax Law compliance", "Financial Auditing", "Accounting Frameworks", "Corporate Law"],
+    salary: { entry: "8-12 LPA", mid: "18-30 LPA", senior: "45-80+ LPA" }
   },
   {
-    id: "content-writer",
-    title: "Content Writer / Strategist",
-    whatTheyDo: "Writes articles, scripts and brand copy that inform, engage and convert readers.",
-    marketDemand: "Moderate",
-    aiVulnerability: {
-      score: 70,
-      level: "High",
-      reason: "Generative AI produces drafts quickly, so routine writing is at high risk; strategy and original voice add value.",
-    },
-    difficulty: {
-      score: 32,
-      level: "Easy",
-      reason: "Low barrier to entry — a portfolio and consistent writing can get you started without a specific degree.",
-    },
-    workHours: "35–45 hrs/week, often flexible and remote-friendly.",
-    salary: {
-      entry: { amount: 350000, years: "0–2 yrs" },
-      mid: { amount: 800000, years: "3–6 yrs" },
-      senior: { amount: 2000000, years: "7+ yrs" },
-    },
-    keySkills: ["Writing", "SEO", "Research", "Editing", "Storytelling"],
-    companies: ["Zomato", "Nykaa", "The Ken", "Dentsu", "Razorpay"],
-    path: [
-      "Class 12 (any stream)",
-      "Bachelor's in English / Journalism / any field",
-      "Build a writing portfolio / blog",
-      "Freelance + internships",
-      "Writer → Senior Writer → Content Lead",
-    ],
-    streams: ["Arts/Humanities", "Commerce", "Science"],
-    relatedCourses: ["english", "journalism", "mass communication", "ba"],
-    relatedSkills: ["Writing", "Research", "Social Media"],
-    relatedInterests: ["Writing & Communication", "Media & Content", "Marketing & Branding"],
-    mbaBoost: false,
+    id: "investment-banker",
+    title: "Investment Banker",
+    description: "Helps corporations raise capital, issues debt, structures massive mergers & acquisitions, and guides stock listings.",
+    streams: ["Commerce", "Science"],
+    interests: ["Finance & Markets", "Business & Management"],
+    aiRisk: "Medium", aiRiskPercent: 38,
+    aiRiskDesc: "AI processes valuation models, but high-stakes deals depend entirely on human relationships and client trust.",
+    difficulty: "Hard", difficultyPercent: 85,
+    difficultyDesc: "Extreme competition; requires an MBA from Tier-1 colleges (IIMs) or global top certifications like CFA.",
+    demand: "High", workHours: "70-90 hrs/week",
+    keywords: ["investment banking", "ib", "cfa", "mba", "finance"],
+    skills: ["Financial Valuation", "M&A Structuring", "Pitch Deck Creation", "Market Strategy"],
+    salary: { entry: "12-22 LPA", mid: "30-60 LPA", senior: "100+ LPA" }
   },
+
+  // --- COMPUTER SCIENCE & ENGINEERING ---
   {
-    id: "doctor",
-    title: "Doctor (MBBS)",
-    whatTheyDo: "Diagnoses and treats patients, caring for their health and guiding their recovery.",
-    marketDemand: "Very High",
-    aiVulnerability: {
-      score: 15,
-      level: "Low",
-      reason: "AI supports diagnosis, but hands-on care, examination and patient trust keep doctors firmly in demand.",
-    },
-    difficulty: {
-      score: 95,
-      level: "Hard",
-      reason: "NEET is fiercely competitive and the journey through MBBS, residency and specialisation spans a decade.",
-    },
-    workHours: "50–80 hrs/week, with night shifts and on-call duty, especially during residency.",
-    salary: {
-      entry: { amount: 800000, years: "0–3 yrs" },
-      mid: { amount: 1800000, years: "4–8 yrs" },
-      senior: { amount: 4000000, years: "9+ yrs" },
-    },
-    keySkills: ["Biology", "Diagnosis", "Empathy", "Decision Making", "Communication"],
-    companies: ["AIIMS", "Apollo", "Fortis", "Max Healthcare", "Manipal"],
-    path: [
-      "Class 12 (Science with Biology)",
-      "Clear NEET",
-      "MBBS (5.5 yrs)",
-      "MD / MS specialization (optional)",
-      "Resident → Specialist → Consultant",
-    ],
+    id: "software-engineer",
+    title: "Software Engineer (Full-Stack)",
+    description: "Designs, codes, and maintains scalable web applications, handling both client systems and database servers.",
     streams: ["Science"],
-    relatedCourses: ["mbbs", "biology", "b.sc", "medicine"],
-    relatedSkills: ["Research"],
-    relatedInterests: ["Healthcare", "Science & Research", "Psychology & People"],
-    mbaBoost: false,
+    interests: ["Technology & Coding", "Mathematics & Logic"],
+    aiRisk: "High", aiRiskPercent: 55,
+    aiRiskDesc: "AI generates basic boilerplate code blocks, but building unique architecture and creative problem-solving remains a human task.",
+    difficulty: "Moderate", difficultyPercent: 60,
+    difficultyDesc: "Accessible with practice, but keeping up with evolving languages and system tools requires non-stop learning.",
+    demand: "High", workHours: "40-50 hrs/week",
+    keywords: ["b.tech", "cse", "coding", "software developer", "computer science"],
+    skills: ["JavaScript/TypeScript", "System Design", "Database Management", "Cloud Architectures"],
+    salary: { entry: "6-14 LPA", mid: "18-35 LPA", senior: "45-90+ LPA" }
   },
   {
-    id: "psychologist",
+    id: "data-scientist",
+    title: "Data Scientist / AI Engineer",
+    description: "Builds complex machine learning algorithms and math models to train predictive systems and large language models.",
+    streams: ["Science"],
+    interests: ["Data & Analytics", "Technology & Coding", "Mathematics & Logic"],
+    aiRisk: "Low", aiRiskPercent: 15,
+    aiRiskDesc: "As the creators of AI frameworks, these engineers remain heavily insulated from automation risks.",
+    difficulty: "Hard", difficultyPercent: 78,
+    difficultyDesc: "Demands an exceptionally deep understanding of calculus, linear algebra, statistics, and programming languages.",
+    demand: "High", workHours: "40-55 hrs/week",
+    keywords: ["ai", "machine learning", "data science", "b.tech cse", "python"],
+    skills: ["Python/R", "Deep Learning", "Predictive Analytics", "Advanced Statistics"],
+    salary: { entry: "8-16 LPA", mid: "22-45 LPA", senior: "55-120+ LPA" }
+  },
+
+  // --- PSYCHOLOGY & HUMAN BEHAVIOR ---
+  {
+    id: "clinical-psychologist",
     title: "Clinical Psychologist",
-    whatTheyDo: "Helps people manage mental health through assessment, therapy and counselling.",
-    marketDemand: "Growing",
-    aiVulnerability: {
-      score: 18,
-      level: "Low",
-      reason: "Human empathy, trust and nuanced judgment in therapy are very hard for AI to replicate.",
-    },
-    difficulty: {
-      score: 68,
-      level: "Moderate",
-      reason: "Requires years of study up to an M.Phil/PsyD and RCI licensing before you can practise independently.",
-    },
-    workHours: "35–45 hrs/week, mostly session-based and schedulable.",
-    salary: {
-      entry: { amount: 400000, years: "0–3 yrs" },
-      mid: { amount: 900000, years: "4–8 yrs" },
-      senior: { amount: 2200000, years: "9+ yrs" },
-    },
-    keySkills: ["Empathy", "Active Listening", "Assessment", "Research", "Communication"],
-    companies: ["NIMHANS", "Fortis", "Manas", "Amaha", "Lissun"],
-    path: [
-      "Class 12 (any stream, Psychology helps)",
-      "BA / B.Sc Psychology",
-      "MA Psychology",
-      "M.Phil / PsyD in Clinical Psychology (RCI)",
-      "Therapist → Clinical Psychologist → Consultant",
-    ],
-    streams: ["Arts/Humanities", "Science", "Commerce"],
-    relatedCourses: ["psychology", "ba", "b.sc"],
-    relatedSkills: ["Research", "Active Listening"],
-    relatedInterests: ["Psychology & People", "Healthcare", "Science & Research"],
-    mbaBoost: false,
+    description: "Diagnoses and provides evidence-based therapies for emotional, behavioral, and mental health challenges.",
+    streams: ["Arts/Humanities", "Science"],
+    interests: ["Psychology & People", "Healthcare"],
+    aiRisk: "Low", aiRiskPercent: 10,
+    aiRiskDesc: "Deep empathy, therapeutic bonds, and reading non-verbal emotional cues cannot be emulated by software models.",
+    difficulty: "Hard", difficultyPercent: 70,
+    difficultyDesc: "Requires an MA/M.Sc followed by an RCI-approved M.Phil or Psy.D to legally practice in India.",
+    demand: "High", workHours: "35-45 hrs/week",
+    keywords: ["psychology", "ba psychology", "clinical", "therapy", "counseling"],
+    skills: ["Psychotherapy", "Diagnostic Assessment", "Active Listening", "Empathy"],
+    salary: { entry: "4-6 LPA", mid: "10-18 LPA", senior: "22-45+ LPA" }
   },
+
+  // --- DESIGN & ARTS ---
   {
-    id: "entrepreneur",
-    title: "Entrepreneur / Founder",
-    whatTheyDo: "Builds a business from an idea — solving a problem, building a team and creating value.",
-    marketDemand: "Growing",
-    aiVulnerability: {
-      score: 10,
-      level: "Low",
-      reason: "Founders use AI as leverage; vision, risk-taking and leadership cannot be automated away.",
-    },
-    difficulty: {
-      score: 90,
-      level: "Hard",
-      reason: "Most startups fail — it demands relentless effort, financial risk and resilience with no safety net.",
-    },
-    workHours: "60–100 hrs/week in the early years, with no fixed limits or off-days.",
-    salary: {
-      entry: { amount: 300000, years: "0–3 yrs" },
-      mid: { amount: 2000000, years: "4–8 yrs" },
-      senior: { amount: 10000000, years: "9+ yrs" },
-    },
-    keySkills: ["Leadership", "Sales", "Resilience", "Strategy", "Finance"],
-    companies: ["Your own startup", "Y Combinator (backed)", "Sequoia / Peak XV (backed)"],
-    path: [
-      "Class 12 (any stream)",
-      "Bachelor's (optional but useful network)",
-      "Build & test a small product",
-      "Find co-founders / mentors / funding",
-      "Founder → Scale → Exit / Grow",
-    ],
-    streams: ["Commerce", "Science", "Arts/Humanities"],
-    relatedCourses: ["bba", "b.com", "b.tech", "economics", "mba"],
-    relatedSkills: ["Leadership", "Negotiation", "Public Speaking", "Financial Modeling"],
-    relatedInterests: ["Entrepreneurship", "Business & Management", "Marketing & Branding", "Technology & Coding"],
-    mbaBoost: false,
+    id: "ui-ux-designer",
+    title: "UI/UX Product Designer",
+    description: "Shapes the digital presentation, visual flow, layouts, and accessibility experiences of apps and websites.",
+    streams: ["Arts/Humanities", "Commerce", "Science"],
+    interests: ["Design & Creativity", "Technology & Coding"],
+    aiRisk: "Medium", aiRiskPercent: 30,
+    aiRiskDesc: "AI speeds up standard asset layout designs, but understanding human user friction requires intuitive creative direction.",
+    difficulty: "Moderate", difficultyPercent: 50,
+    difficultyDesc: "Relies more on building a compelling visual portfolio of practical design work than high institutional exams.",
+    demand: "High", workHours: "40-50 hrs/week",
+    keywords: ["design", "ui ux", "b.des", "figma", "product designer"],
+    skills: ["Figma/Adobe", "User Research", "Wireframing", "Interaction Design"],
+    salary: { entry: "5-9 LPA", mid: "14-25 LPA", senior: "35-65+ LPA" }
   },
+
+  // --- MEDIA & COMMUNICATION ---
+  {
+    id: "journalist",
+    title: "Journalist / Media Anchor",
+    description: "Investigates current events, reports news stories, and hosts public broadcasts across television and digital networks.",
+    streams: ["Arts/Humanities", "Commerce"],
+    interests: ["Writing & Communication", "Media & Content"],
+    aiRisk: "Medium", aiRiskPercent: 45,
+    aiRiskDesc: "AI can draft basic factual bulletins, but field reporting, live interviewing, and investigative journalism require human grit.",
+    difficulty: "Moderate", difficultyPercent: 55,
+    difficultyDesc: "Requires building trust, a unique vocal presence, and working through high-pressure breaking news situations.",
+    demand: "Moderate", workHours: "45-60 hrs/week",
+    keywords: ["bjmc", "journalism", "mass communication", "media"],
+    skills: ["Investigative Reporting", "Public Speaking", "Script Writing", "Video Production"],
+    salary: { entry: "3-6 LPA", mid: "8-18 LPA", senior: "25-60+ LPA" }
+  }
 ]
-
-export interface CareerInput {
-  stream: Stream
-  course?: string
-  interests: string[]
-  skills: string[]
-  hasInternship: boolean
-  hasMba: boolean
-  mbaSchool?: string
-}
-
-export interface CareerMatch {
-  career: Career
-  matchPercent: number
-  reasons: string[]
-}
-
-const TOP_MBA_SCHOOLS = ["iim", "isb", "xlri", "fms", "spjain", "iift", "mdi"]
-
-export function matchCareers(input: CareerInput): CareerMatch[] {
-  // STRICT FILTER: A career MUST explicitly include the selected stream
-  const eligibleCareers = careers.filter((career) => 
-    career.streams.includes(input.stream)
-  )
-
-  const results: CareerMatch[] = eligibleCareers.map((career) => {
-    let totalScore = 0
-    let maxPossibleScore = 0
-    const reasons: string[] = []
-
-    // Primary Stream Fit (Weight: 30)
-    maxPossibleScore += 30
-    if (career.streams[0] === input.stream) {
-      totalScore += 30
-      reasons.push(`Perfect match for your primary stream: ${input.stream}.`)
-    } else {
-      totalScore += 18
-      reasons.push(`Compatible with your stream: ${input.stream}.`)
-    }
-
-    // Direct Interest Matching (Weight: 40)
-    if (input.interests && input.interests.length > 0) {
-      maxPossibleScore += 40
-      const matchingInterests = input.interests.filter((interest) =>
-        career.relatedInterests.includes(interest)
-      )
-      
-      if (matchingInterests.length > 0) {
-        const interestScore = (matchingInterests.length / input.interests.length) * 40
-        totalScore += Math.min(40, interestScore)
-        reasons.push(`Strongly aligns with your interest in ${matchingInterests.slice(0, 2).join(" & ")}.`)
-      }
-    }
-
-    // Skill Selection Overlap (Weight: 20)
-    if (input.skills && input.skills.length > 0) {
-      maxPossibleScore += 20
-      const matchingSkills = input.skills.filter((skill) =>
-        career.relatedSkills.includes(skill)
-      )
-      
-      if (matchingSkills.length > 0) {
-        const skillScore = (matchingSkills.length / career.relatedSkills.length) * 20
-        totalScore += Math.min(20, skillScore)
-        reasons.push(`Leverages your skills in ${matchingSkills.slice(0, 2).join(" & ")}.`)
-      }
-    }
-
-    // Explicit Academic Background Check (Weight: 10)
-    if (input.course && input.course.trim()) {
-      maxPossibleScore += 10
-      const userCourse = input.course.toLowerCase().trim()
-      const courseMatch = career.relatedCourses.some((rc) => userCourse.includes(rc) || rc.includes(userCourse))
-      
-      if (courseMatch) {
-        totalScore += 10
-        reasons.push(`Directly complements your current background/course.`)
-      }
-    }
-
-    // Experience Bonuses
-    let bonus = 0
-    if (input.hasInternship) {
-      bonus += 3
-      reasons.push(`Your practical internship experience adds a competitive edge.`)
-    }
-    
-    if (input.hasMba && career.mbaBoost) {
-      const school = (input.mbaSchool || "").toLowerCase()
-      const isTopSchool = TOP_MBA_SCHOOLS.some((s) => school.includes(s))
-      bonus += isTopSchool ? 7 : 4
-      reasons.push(isTopSchool ? `Top-tier MBA provides an elite path here.` : `An MBA accelerates growth in this role.`)
-    }
-
-    const basePercentage = maxPossibleScore > 0 ? (totalScore / maxPossibleScore) * 100 : 0
-    const matchPercent = Math.min(99, Math.round(basePercentage + bonus))
-
-    return { career, matchPercent, reasons }
-  })
-
-  // Filter out poor recommendations entirely
-  return results
-    .filter(item => item.matchPercent >= 35)
-    .sort((a, b) => b.matchPercent - a.matchPercent)
-}
-
-export function formatINR(amount: number): string {
-  if (amount >= 10000000) {
-    return `₹${(amount / 10000000).toFixed(2).replace(/\.00$/, "")} Cr`
-  }
-  if (amount >= 100000) {
-    return `₹${(amount / 100000).toFixed(1).replace(/\.0$/, "")} LPA`
-  }
-  return `₹${amount.toLocaleString("en-IN")}`
-}
