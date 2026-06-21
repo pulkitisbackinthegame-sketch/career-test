@@ -2,9 +2,8 @@
 
 import { useState } from "react"
 import { Briefcase, GraduationCap, TrendingUp } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { type Stream, type Career, careersData } from "@/lib/career-data"
-// Using a direct relative path to completely bypass alias pathing issues
+import { Button } from "./ui/button"
+import { type Stream, type Career, careersData } from "../lib/career-data"
 import { FieldLabel, StreamSelect, ChipMultiSelect } from "./finder-control"
 
 export interface CareerMatch {
