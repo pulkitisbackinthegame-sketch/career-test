@@ -1,16 +1,15 @@
 "use client"
 
 import { useState } from "react"
-import { GraduationCap, MapPin, Ticket, Percent, Wallet } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { GraduationCap, MapPin, Ticket, Percent } from "lucide-react"
+import { type Stream } from "@/lib/career-data"
 import {
   FieldLabel,
   StreamSelect,
   ChipMultiSelect,
   YesNoToggle,
   TextField,
-} from "@/components/finder-controls"
-import { type Stream } from "./career-data"
+} from "@/ui/finder-controls"
 
 export type AdmissionChance = "High" | "Moderate" | "Low"
 
@@ -24,6 +23,8 @@ export interface College {
   id: string
   name: string
   city: string
+  state: string
+  tier: "Tier 1" | "Tier 2" | "Tier 3"
   streams: Stream[]
   courses: string[]
   fee: number
@@ -66,113 +67,261 @@ export const FIELD_OPTIONS = [
 ]
 
 export const colleges: College[] = [
+  // --- DELHI ---
   {
     id: "srcc-delhi",
     name: "Shri Ram College of Commerce (SRCC)",
-    city: "Delhi",
-    streams: ["Commerce", "Science"],
+    city: "Delhi", state: "Delhi", tier: "Tier 1",
+    streams: ["Commerce"],
     courses: ["B.Com (Hons)", "BA (Hons) Economics"],
-    fee: 90000,
-    durationYears: 3,
-    acceptanceRate: 2,
+    fee: 90000, durationYears: 3, acceptanceRate: 2,
     entranceExams: [{ name: "CUET", cutoff: "99.5+ Percentile", minPercentileNeeded: 99.2 }],
-    baseLivingCostPerYear: 120000,
-    baseMiscCostPerYear: 20000,
+    baseLivingCostPerYear: 120000, baseMiscCostPerYear: 20000
   },
   {
     id: "lsr-delhi",
     name: "Lady Shri Ram College for Women (LSR)",
-    city: "Delhi",
-    streams: ["Commerce", "Arts/Humanities", "Science"],
+    city: "Delhi", state: "Delhi", tier: "Tier 1",
+    streams: ["Commerce", "Arts/Humanities"],
     courses: ["BA (Hons) Psychology", "B.Com (Hons)", "BA Economics"],
-    fee: 75000,
-    durationYears: 3,
-    acceptanceRate: 3,
+    fee: 75000, durationYears: 3, acceptanceRate: 3,
     entranceExams: [{ name: "CUET", cutoff: "99.0+ Percentile", minPercentileNeeded: 98.7 }],
-    baseLivingCostPerYear: 140000,
-    baseMiscCostPerYear: 25000,
+    baseLivingCostPerYear: 140000, baseMiscCostPerYear: 25000
   },
   {
     id: "iit-delhi",
     name: "Indian Institute of Technology (IIT Delhi)",
-    city: "Delhi",
+    city: "Delhi", state: "Delhi", tier: "Tier 1",
     streams: ["Science"],
-    courses: ["B.Tech Computer Science", "B.Tech Electrical"],
-    fee: 850000,
-    durationYears: 4,
-    acceptanceRate: 1,
+    courses: ["B.Tech Computer Science", "B.Tech Electrical Engineering"],
+    fee: 850000, durationYears: 4, acceptanceRate: 1,
     entranceExams: [{ name: "JEE Advanced", cutoff: "Top 1000 Rank", minPercentileNeeded: 99.5 }],
-    baseLivingCostPerYear: 80000,
-    baseMiscCostPerYear: 30000,
+    baseLivingCostPerYear: 80000, baseMiscCostPerYear: 30000
   },
   {
-    id: "christ-bangalore",
-    name: "Christ University",
-    city: "Bangalore",
-    streams: ["Commerce", "Arts/Humanities", "Science"],
-    courses: ["BBA (Finance)", "B.Com", "B.Sc Psychology"],
-    fee: 650000,
-    durationYears: 3,
-    acceptanceRate: 12,
-    entranceExams: [{ name: "CUET / Christ Test", cutoff: "Clear Interview + 85+", minPercentileNeeded: 85 }],
-    baseLivingCostPerYear: 150000,
-    baseMiscCostPerYear: 40000,
+    id: "nlu-delhi",
+    name: "National Law University (NLU Delhi)",
+    city: "Delhi", state: "Delhi", tier: "Tier 1",
+    streams: ["Arts/Humanities", "Commerce", "Science"],
+    courses: ["BA LL.B. (Hons)"],
+    fee: 1050000, durationYears: 5, acceptanceRate: 1.5,
+    entranceExams: [{ name: "AILET", cutoff: "Top 100 Rank", minPercentileNeeded: 98.5 }],
+    baseLivingCostPerYear: 90000, baseMiscCostPerYear: 20000
+  },
+  {
+    id: "dtu-delhi",
+    name: "Delhi Technological University (DTU)",
+    city: "Delhi", state: "Delhi", tier: "Tier 2",
+    streams: ["Science"],
+    courses: ["B.Tech Software Engineering", "B.Tech Mechanical"],
+    fee: 900000, durationYears: 4, acceptanceRate: 7,
+    entranceExams: [{ name: "JEE Main", cutoff: "98.5+ Percentile", minPercentileNeeded: 97.5 }],
+    baseLivingCostPerYear: 100000, baseMiscCostPerYear: 20000
+  },
+  {
+    id: "ip-university-delhi",
+    name: "Guru Gobind Singh Indraprastha University (GGSIPU)",
+    city: "Delhi", state: "Delhi", tier: "Tier 3",
+    streams: ["Commerce", "Science", "Arts/Humanities"],
+    courses: ["BBA", "B.Tech CSE", "BA Journalism"],
+    fee: 400000, durationYears: 3, acceptanceRate: 25,
+    entranceExams: [{ name: "IPU CET / CUET", cutoff: "85+ Percentile", minPercentileNeeded: 80 }],
+    baseLivingCostPerYear: 90000, baseMiscCostPerYear: 15000
+  },
+
+  // --- MAHARASHTRA (MUMBAI, PUNE) ---
+  {
+    id: "iit-bombay",
+    name: "IIT Bombay",
+    city: "Mumbai", state: "Maharashtra", tier: "Tier 1",
+    streams: ["Science"],
+    courses: ["B.Tech Computer Science", "B.Tech Aerospace"],
+    fee: 900000, durationYears: 4, acceptanceRate: 0.5,
+    entranceExams: [{ name: "JEE Advanced", cutoff: "Top 500 AIR", minPercentileNeeded: 99.7 }],
+    baseLivingCostPerYear: 80000, baseMiscCostPerYear: 25000
   },
   {
     id: "sxers-mumbai",
     name: "St. Xavier's College",
-    city: "Mumbai",
-    streams: ["Arts/Humanities", "Commerce", "Science"],
-    courses: ["BA Arts", "BMS (Management)", "B.Sc Information Tech"],
-    fee: 45000,
-    durationYears: 3,
-    acceptanceRate: 5,
-    entranceExams: [{ name: "Xavier's Entrance / CUET", cutoff: "95+ Percentile", minPercentileNeeded: 94 }],
-    baseLivingCostPerYear: 180000,
-    baseMiscCostPerYear: 35000,
+    city: "Mumbai", state: "Maharashtra", tier: "Tier 1",
+    streams: ["Arts/Humanities", "Commerce"],
+    courses: ["BA Arts", "BMS Management"],
+    fee: 45000, durationYears: 3, acceptanceRate: 5,
+    entranceExams: [{ name: "Xavier's Test / CUET", cutoff: "95+ Percentile", minPercentileNeeded: 94 }],
+    baseLivingCostPerYear: 180000, baseMiscCostPerYear: 35000
+  },
+  {
+    id: "nmims-mumbai",
+    name: "NMIMS ASMSOC",
+    city: "Mumbai", state: "Maharashtra", tier: "Tier 2",
+    streams: ["Commerce"],
+    courses: ["BBA", "B.Com (Hons)"],
+    fee: 900000, durationYears: 3, acceptanceRate: 12,
+    entranceExams: [{ name: "NPAT", cutoff: "High Merit Standing", minPercentileNeeded: 88 }],
+    baseLivingCostPerYear: 200000, baseMiscCostPerYear: 40000
+  },
+  {
+    id: "coep-pune",
+    name: "COEP Technological University",
+    city: "Pune", state: "Maharashtra", tier: "Tier 1",
+    streams: ["Science"],
+    courses: ["B.Tech Computer Engineering"],
+    fee: 500000, durationYears: 4, acceptanceRate: 4,
+    entranceExams: [{ name: "MHT-CET / JEE", cutoff: "99.2+ Percentile", minPercentileNeeded: 98.5 }],
+    baseLivingCostPerYear: 100000, baseMiscCostPerYear: 20000
   },
   {
     id: "symbiosis-pune",
     name: "Symbiosis Centre for Management Studies",
-    city: "Pune",
-    streams: ["Commerce", "Arts/Humanities", "Science"],
-    courses: ["BBA (Dual Specialization)", "BA Mass Comm"],
-    fee: 910000,
-    durationYears: 3,
-    acceptanceRate: 15,
-    entranceExams: [{ name: "SET Exam / CUET", cutoff: "88+ score matching", minPercentileNeeded: 86 }],
-    baseLivingCostPerYear: 160000,
-    baseMiscCostPerYear: 30000,
+    city: "Pune", state: "Maharashtra", tier: "Tier 2",
+    streams: ["Commerce", "Arts/Humanities"],
+    courses: ["BBA", "BA Mass Communication"],
+    fee: 910000, durationYears: 3, acceptanceRate: 15,
+    entranceExams: [{ name: "SET Exam / CUET", cutoff: "88+ Score", minPercentileNeeded: 85 }],
+    baseLivingCostPerYear: 160000, baseMiscCostPerYear: 30000
+  },
+
+  // --- KARNATAKA (BANGALORE) ---
+  {
+    id: "iisc-bangalore",
+    name: "Indian Institute of Science (IISc)",
+    city: "Bangalore", state: "Karnataka", tier: "Tier 1",
+    streams: ["Science"],
+    courses: ["Bachelor of Science (Research)"],
+    fee: 120000, durationYears: 4, acceptanceRate: 0.2,
+    entranceExams: [{ name: "JEE Advanced / NEET", cutoff: "Top 500 Rank", minPercentileNeeded: 99.6 }],
+    baseLivingCostPerYear: 60000, baseMiscCostPerYear: 15000
+  },
+  {
+    id: "nlsui-bangalore",
+    name: "National Law School of India University (NLSIU)",
+    city: "Bangalore", state: "Karnataka", tier: "Tier 1",
+    streams: ["Arts/Humanities", "Commerce", "Science"],
+    courses: ["BA LL.B. (Hons)"],
+    fee: 1450000, durationYears: 5, acceptanceRate: 1,
+    entranceExams: [{ name: "CLAT", cutoff: "Top 100 AIR", minPercentileNeeded: 99.1 }],
+    baseLivingCostPerYear: 110000, baseMiscCostPerYear: 30000
+  },
+  {
+    id: "christ-bangalore",
+    name: "Christ University (Main Campus)",
+    city: "Bangalore", state: "Karnataka", tier: "Tier 2",
+    streams: ["Commerce", "Arts/Humanities"],
+    courses: ["BBA Finance", "B.Sc Psychology"],
+    fee: 650000, durationYears: 3, acceptanceRate: 15,
+    entranceExams: [{ name: "Christ Test", cutoff: "Interview Basis", minPercentileNeeded: 80 }],
+    baseLivingCostPerYear: 150000, baseMiscCostPerYear: 40000
+  },
+  {
+    id: "rvce-bangalore",
+    name: "RV College of Engineering (RVCE)",
+    city: "Bangalore", state: "Karnataka", tier: "Tier 2",
+    streams: ["Science"],
+    courses: ["B.Tech Computer Science"],
+    fee: 1000000, durationYears: 4, acceptanceRate: 8,
+    entranceExams: [{ name: "COMEDK / KCET", cutoff: "Top 1000 Rank", minPercentileNeeded: 95 }],
+    baseLivingCostPerYear: 120000, baseMiscCostPerYear: 20000
+  },
+
+  // --- WEST BENGAL ---
+  {
+    id: "iit-kharagpur",
+    name: "IIT Kharagpur",
+    city: "Kharagpur", state: "West Bengal", tier: "Tier 1",
+    streams: ["Science"],
+    courses: ["B.Tech Computer Science"],
+    fee: 880000, durationYears: 4, acceptanceRate: 0.6,
+    entranceExams: [{ name: "JEE Advanced", cutoff: "Top 600 AIR", minPercentileNeeded: 99.4 }],
+    baseLivingCostPerYear: 70000, baseMiscCostPerYear: 15000
+  },
+  {
+    id: "sxers-kolkata",
+    name: "St. Xavier's College (Kolkata)",
+    city: "Kolkata", state: "West Bengal", tier: "Tier 1",
+    streams: ["Commerce", "Arts/Humanities"],
+    courses: ["B.Com (Hons)", "BA English"],
+    fee: 120000, durationYears: 3, acceptanceRate: 6,
+    entranceExams: [{ name: "CUET / Merit Score", cutoff: "95+ Percentile", minPercentileNeeded: 92 }],
+    baseLivingCostPerYear: 110000, baseMiscCostPerYear: 15000
+  },
+  {
+    id: "ju-kolkata",
+    name: "Jadavpur University",
+    city: "Kolkata", state: "West Bengal", tier: "Tier 1",
+    streams: ["Science", "Arts/Humanities"],
+    courses: ["B.Tech CSE", "BA Economics"],
+    fee: 40000, durationYears: 4, acceptanceRate: 2,
+    entranceExams: [{ name: "WBJEE", cutoff: "Top 200 Rank", minPercentileNeeded: 98.8 }],
+    baseLivingCostPerYear: 50000, baseMiscCostPerYear: 10000
+  },
+
+  // --- TAMIL NADU ---
+  {
+    id: "iit-madras",
+    name: "IIT Madras",
+    city: "Chennai", state: "Tamil Nadu", tier: "Tier 1",
+    streams: ["Science"],
+    courses: ["B.Tech CSE"],
+    fee: 900000, durationYears: 4, acceptanceRate: 0.4,
+    entranceExams: [{ name: "JEE Advanced", cutoff: "Top 400 Rank", minPercentileNeeded: 99.6 }],
+    baseLivingCostPerYear: 75000, baseMiscCostPerYear: 15000
+  },
+  {
+    id: "loyola-chennai",
+    name: "Loyola College",
+    city: "Chennai", state: "Tamil Nadu", tier: "Tier 1",
+    streams: ["Commerce", "Arts/Humanities"],
+    courses: ["B.Com (Hons)", "BA Economics"],
+    fee: 110000, durationYears: 3, acceptanceRate: 5,
+    entranceExams: [{ name: "Merit Matrix", cutoff: "94+ Percentile", minPercentileNeeded: 90 }],
+    baseLivingCostPerYear: 120000, baseMiscCostPerYear: 20000
   },
   {
     id: "vit-vellore",
     name: "Vellore Institute of Technology (VIT)",
-    city: "Vellore",
+    city: "Vellore", state: "Tamil Nadu", tier: "Tier 2",
     streams: ["Science"],
-    courses: ["B.Tech CSE", "B.Tech Bio-Engineering"],
-    fee: 780000,
-    durationYears: 4,
-    acceptanceRate: 10,
-    entranceExams: [{ name: "VITEEE / CUET", cutoff: "Under 20k Rank", minPercentileNeeded: 88 }],
-    baseLivingCostPerYear: 110000,
-    baseMiscCostPerYear: 25000,
+    courses: ["B.Tech CSE"],
+    fee: 790000, durationYears: 4, acceptanceRate: 10,
+    entranceExams: [{ name: "VITEEE", cutoff: "Under 15k Rank", minPercentileNeeded: 88 }],
+    baseLivingCostPerYear: 130000, baseMiscCostPerYear: 25000
+  },
+
+  // --- UTTAR PRADESH & PUNJAB ---
+  {
+    id: "bhu-varanasi",
+    name: "Banaras Hindu University (BHU)",
+    city: "Varanasi", state: "Uttar Pradesh", tier: "Tier 1",
+    streams: ["Arts/Humanities", "Commerce"],
+    courses: ["BA Social Sciences", "B.Com (Hons)"],
+    fee: 25000, durationYears: 3, acceptanceRate: 5,
+    entranceExams: [{ name: "CUET", cutoff: "94+ Percentile", minPercentileNeeded: 91 }],
+    baseLivingCostPerYear: 60000, baseMiscCostPerYear: 10000
   },
   {
-    id: "nmims-mumbai",
-    name: "Narsee Monjee Institute of Management Studies",
-    city: "Mumbai",
-    streams: ["Commerce", "Science"],
-    courses: ["BBA", "B.Com (Hons)", "B.Sc Economics"],
-    fee: 900000,
-    durationYears: 3,
-    acceptanceRate: 8,
-    entranceExams: [{ name: "NPAT / CUET", cutoff: "High Merit Standing", minPercentileNeeded: 90 }],
-    baseLivingCostPerYear: 200000,
-    baseMiscCostPerYear: 40000,
+    id: "thapar-patiala",
+    name: "Thapar Institute of Engineering & Technology",
+    city: "Patiala", state: "Punjab", tier: "Tier 2",
+    streams: ["Science"],
+    courses: ["B.Tech CSE"],
+    fee: 1950000, durationYears: 4, acceptanceRate: 20,
+    entranceExams: [{ name: "JEE Main", cutoff: "94.5+ Percentile", minPercentileNeeded: 92 }],
+    baseLivingCostPerYear: 140000, baseMiscCostPerYear: 25000
+  },
+  {
+    id: "lpu-punjab",
+    name: "Lovely Professional University (LPU)",
+    city: "Phagwara", state: "Punjab", tier: "Tier 3",
+    streams: ["Science", "Commerce", "Arts/Humanities"],
+    courses: ["B.Tech CSE", "BBA", "BA Arts"],
+    fee: 960000, durationYears: 4, acceptanceRate: 70,
+    entranceExams: [{ name: "LPUNEST", cutoff: "Eligibility Score", minPercentileNeeded: 55 }],
+    baseLivingCostPerYear: 90000, baseMiscCostPerYear: 15000
   }
 ]
 
 export function matchColleges(input: CollegeInput): CollegeMatch[] {
+  // RULE 1: Strict filtering based on secondary stream priority
   let baseFiltered = colleges.filter((col) => col.streams.includes(input.stream));
 
   if (!input.livesOutOfCity && input.homeCity.trim() !== "") {
@@ -185,6 +334,7 @@ export function matchColleges(input: CollegeInput): CollegeMatch[] {
     .map((college) => {
       let scorePoints = 65
       
+      // RULE 2: Interests rank items to top but don't delete missed parameters
       if (input.interests.length > 0) {
         const matchCount = input.interests.some((interest) => {
           const lowerName = college.name.toLowerCase() + " " + college.courses.join(" ").toLowerCase()
@@ -341,9 +491,14 @@ export function CollegeFinderUI() {
                 <div key={m.college.id} className="rounded-3xl border border-border bg-card p-6 shadow-sm">
                   <div className="flex items-start justify-between gap-4">
                     <div className="space-y-1">
-                      <h4 className="font-heading text-lg font-bold tracking-tight text-foreground">
-                        {m.college.name}
-                      </h4>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <h4 className="font-heading text-lg font-bold tracking-tight text-foreground">
+                          {m.college.name}
+                        </h4>
+                        <span className="inline-flex items-center rounded-md bg-secondary/80 px-2 py-0.5 text-[10px] font-bold text-muted-foreground border border-border/40">
+                          {m.college.tier} • {m.college.state}
+                        </span>
+                      </div>
                       <p className="text-sm text-muted-foreground flex items-center gap-1">
                         <MapPin className="size-3.5 text-muted-foreground/70" /> {m.college.city}
                       </p>
@@ -408,3 +563,5 @@ export function CollegeFinderUI() {
     </section>
   )
 }
+
+```
