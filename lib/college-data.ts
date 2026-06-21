@@ -46,7 +46,7 @@ export const FIELD_OPTIONS = [
   "Media & Communication",
 ]
 
-export const colleges: College[] = [
+export const collegesData: College[] = [
   {
     id: "srcc",
     name: "Shri Ram College of Commerce (DU)",
