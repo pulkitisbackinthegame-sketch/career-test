@@ -2,17 +2,16 @@
 
 import { useState } from "react"
 import { GraduationCap, MapPin, Ticket, Percent } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { type Stream } from "@/lib/career-data"
-import { collegesData, type College } from "@/lib/college-data"
-// Using a direct relative path to completely bypass alias pathing issues
+import { Button } from "./ui/button"
+import { type Stream } from "../lib/career-data"
+import { collegesData, type College } from "../lib/college-data"
 import {
   FieldLabel,
   StreamSelect,
   ChipMultiSelect,
   YesNoToggle,
   TextField,
-} from "./finder-control"
+} from "./finder-controls"
 
 export type AdmissionChance = "High" | "Moderate" | "Low"
 
