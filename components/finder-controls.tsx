@@ -12,22 +12,27 @@ export function FieldLabel({ children, optional }: { children: React.ReactNode; 
 
 export function StreamSelect({ value, onChange }: { value: string | null; onChange: (v: any) => void }) {
   const streams = ["Science", "Commerce", "Arts/Humanities"]
+  
   return (
     <div className="grid grid-cols-3 gap-2">
-      {streams.map((s) => (
-        <button
-          key={s}
-          type="button"
-          onClick={() => onChange(s)}
-          className={`rounded-xl border p-3 text-xs font-bold transition-all ${
-            value === s 
-              ? "border-primary bg-primary/10 text-primary" 
-              : "border-border bg-background text-muted-foreground hover:bg-accent"
-          }`}
-        >
-          {s}
-        </button>
-      ))}
+      {streams.map((s) => {
+        // Completely avoiding the ? conditional to stop hidden character errors
+        let buttonClass = "border-border bg-background text-muted-foreground hover:bg-accent"
+        if (value === s) {
+          buttonClass = "border-primary bg-primary/10 text-primary"
+        }
+
+        return (
+          <button
+            key={s}
+            type="button"
+            onClick={() => onChange(s)}
+            className={`rounded-xl border p-3 text-xs font-bold transition-all ${buttonClass}`}
+          >
+            {s}
+          </button>
+        )
+      })}
     </div>
   )
 }
@@ -36,17 +41,17 @@ export function ChipMultiSelect({ options, selected, onToggle }: { options: stri
   return (
     <div className="flex flex-wrap gap-1.5">
       {options.map((opt) => {
-        const isSelected = selected.includes(opt)
+        let chipClass = "border-border bg-background text-muted-foreground hover:bg-accent"
+        if (selected.includes(opt)) {
+          chipClass = "border-primary bg-primary text-primary-foreground"
+        }
+
         return (
           <button
             key={opt}
             type="button"
             onClick={() => onToggle(opt)}
-            className={`rounded-full border px-3 py-1 text-xs font-medium transition-all ${
-              isSelected
-                ? "border-primary bg-primary text-primary-foreground"
-                : "border-border bg-background text-muted-foreground hover:bg-accent"
-            }`}
+            className={`rounded-full border px-3 py-1 text-xs font-medium transition-all ${chipClass}`}
           >
             {opt}
           </button>
@@ -57,19 +62,28 @@ export function ChipMultiSelect({ options, selected, onToggle }: { options: stri
 }
 
 export function YesNoToggle({ value, onChange }: { value: boolean; onChange: (v: boolean) => void }) {
+  let yesClass = "bg-background border-border text-muted-foreground"
+  let noClass = "bg-background border-border text-muted-foreground"
+
+  if (value) {
+    yesClass = "bg-primary text-primary-foreground border-primary"
+  } else {
+    noClass = "bg-primary text-primary-foreground border-primary"
+  }
+
   return (
     <div className="flex gap-2">
       <button
         type="button"
         onClick={() => onChange(true)}
-        className={`rounded-lg px-3 py-1.5 text-xs font-semibold border ${value ? "bg-primary text-primary-foreground border-primary" : "bg-background border-border text-muted-foreground"}`}
+        className={`rounded-lg px-3 py-1.5 text-xs font-semibold border ${yesClass}`}
       >
         Yes
       </button>
       <button
         type="button"
         onClick={() => onChange(false)}
-        className={`rounded-lg px-3 py-1.5 text-xs font-semibold border ${!value ? "bg-primary text-primary-foreground border-primary" : "bg-background border-border text-muted-foreground"}`}
+        className={`rounded-lg px-3 py-1.5 text-xs font-semibold border ${noClass}`}
       >
         No
       </button>
