@@ -4,7 +4,7 @@ import { useState } from "react"
 import { Briefcase, Activity, AlertCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { FieldLabel, StreamSelect, ChipMultiSelect } from "@/components/finder-controls"
-import { FieldLabel, StreamSelect, ChipMultiSelect } from "@/components/ui/finder-controls"
+import { FieldLabel, StreamSelect, ChipMultiSelect } from "@/ui/finder-controls"
 
 export interface CareerInput {
   stream: Stream
