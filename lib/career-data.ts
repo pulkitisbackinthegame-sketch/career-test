@@ -1,192 +1,264 @@
-export type Stream = "Commerce" | "Science" | "Arts/Humanities"
+export type Stream = "Science" | "Commerce" | "Arts/Humanities"
 
 export interface SalaryRange {
-  entry: string
-  mid: string
-  senior: string
+  min: number
+  max: number
 }
 
-export interface CareerPath {
-  id: string
+export interface Career {
   title: string
   description: string
-  streams: Stream[]
-  interests: string[]
-  aiRisk: "Low" | "Medium" | "High"
-  aiRiskPercent: number
-  aiRiskDesc: string
-  difficulty: "Easy" | "Moderate" | "Hard"
-  difficultyPercent: number
-  difficultyDesc: string
-  demand: "Low" | "Moderate" | "High"
-  workHours: string
-  keywords: string[]
-  skills: string[]
-  salary: SalaryRange
+  salaryRange: SalaryRange
+  degrees: string[]
+  tasks: string[]
+  tags: string[]
 }
 
-export const careerPaths: CareerPath[] = [
-  // --- LAW & LEGAL STUDIES ---
-  {
-    id: "corporate-lawyer",
-    title: "Corporate Lawyer",
-    description: "Advises businesses on legal rights, obligations, and relations, specializing in contract, tax, and merger compliance.",
-    streams: ["Commerce", "Arts/Humanities", "Science"],
-    interests: ["Law & Policy", "Business & Management"],
-    aiRisk: "Medium", aiRiskPercent: 45,
-    aiRiskDesc: "AI drafts routine contracts, but complex courtroom litigation and strategic negotiation require human lawyers.",
-    difficulty: "Hard", difficultyPercent: 75,
-    difficultyDesc: "Requires cracking top law schools via CLAT/AILET followed by rigorous, competitive study.",
-    demand: "High", workHours: "50-70 hrs/week",
-    keywords: ["clat", "llb", "law", "corporate law", "ba llb", "bba llb"],
-    skills: ["Negotiation", "Legal Drafting", "Analytical Thinking", "Public Speaking"],
-    salary: { entry: "8-12 LPA", mid: "20-35 LPA", senior: "60-90+ LPA" }
-  },
-  {
-    id: "litigation-lawyer",
-    title: "Criminal / Civil Litigator",
-    description: "Represents clients in court trials, arguing cases, conducting cross-examinations, and managing legal disputes.",
-    streams: ["Arts/Humanities", "Commerce", "Science"],
-    interests: ["Law & Policy", "Writing & Communication"],
-    aiRisk: "Low", aiRiskPercent: 20,
-    aiRiskDesc: "Courtroom advocacy, judging human behavior, and spontaneous legal arguments cannot be replicated by AI.",
-    difficulty: "Hard", difficultyPercent: 80,
-    difficultyDesc: "Takes years to build an independent practice and reputation in district or high courts.",
-    demand: "High", workHours: "45-65 hrs/week",
-    keywords: ["lawyer", "advocate", "clat", "llb", "court", "ba llb"],
-    skills: ["Courtroom Advocacy", "Cross Examination", "Legal Research", "Storytelling"],
-    salary: { entry: "4-7 LPA", mid: "12-25 LPA", senior: "50-100+ LPA" }
-  },
-
-  // --- ECONOMICS & POLICY ---
-  {
-    id: "economist",
-    title: "Economist / Policy Analyst",
-    description: "Studies data trends and creates frameworks to advise governments, central banks, and corporate blocks on financial policies.",
-    streams: ["Arts/Humanities", "Commerce"],
-    interests: ["Economics", "Law & Policy", "Data & Analytics"],
-    aiRisk: "Medium", aiRiskPercent: 35,
-    aiRiskDesc: "AI crunches data faster, but human judgment is vital to interpret policy implications and real-world behavior.",
-    difficulty: "Moderate", difficultyPercent: 65,
-    difficultyDesc: "Usually requires a strong master's degree or Ph.D. from premium institutes for core advisory roles.",
-    demand: "Moderate", workHours: "40-50 hrs/week",
-    keywords: ["economics", "eco hons", "ba eco", "policy", "analyst"],
-    skills: ["Statistical Modeling", "Economic Theory", "Data Analytics", "Report Writing"],
-    salary: { entry: "6-9 LPA", mid: "15-26 LPA", senior: "40-75 LPA" }
-  },
-
-  // --- COMMERCE & FINANCE ---
-  {
-    id: "chartered-accountant",
-    title: "Chartered Accountant (CA)",
-    description: "Manages financial auditing, taxation, corporate finance, and accounting systems for businesses and individuals.",
-    streams: ["Commerce"],
-    interests: ["Accounting", "Finance & Markets"],
-    aiRisk: "Medium", aiRiskPercent: 40,
-    aiRiskDesc: "Basic bookkeeping is automated, but complex tax planning and auditing strategies require certified professionals.",
-    difficulty: "Hard", difficultyPercent: 90,
-    difficultyDesc: "Known for an exceptionally low passing percentage across Foundation, Intermediate, and Final exams.",
-    demand: "High", workHours: "45-60 hrs/week (Peak during tax season)",
-    keywords: ["ca", "chartered accountant", "b.com", "audit", "taxation"],
-    skills: ["Tax Law compliance", "Financial Auditing", "Accounting Frameworks", "Corporate Law"],
-    salary: { entry: "8-12 LPA", mid: "18-30 LPA", senior: "45-80+ LPA" }
-  },
-  {
-    id: "investment-banker",
-    title: "Investment Banker",
-    description: "Helps corporations raise capital, issues debt, structures massive mergers & acquisitions, and guides stock listings.",
-    streams: ["Commerce", "Science"],
-    interests: ["Finance & Markets", "Business & Management"],
-    aiRisk: "Medium", aiRiskPercent: 38,
-    aiRiskDesc: "AI processes valuation models, but high-stakes deals depend entirely on human relationships and client trust.",
-    difficulty: "Hard", difficultyPercent: 85,
-    difficultyDesc: "Extreme competition; requires an MBA from Tier-1 colleges (IIMs) or global top certifications like CFA.",
-    demand: "High", workHours: "70-90 hrs/week",
-    keywords: ["investment banking", "ib", "cfa", "mba", "finance"],
-    skills: ["Financial Valuation", "M&A Structuring", "Pitch Deck Creation", "Market Strategy"],
-    salary: { entry: "12-22 LPA", mid: "30-60 LPA", senior: "100+ LPA" }
-  },
-
-  // --- COMPUTER SCIENCE & ENGINEERING ---
-  {
-    id: "software-engineer",
-    title: "Software Engineer (Full-Stack)",
-    description: "Designs, codes, and maintains scalable web applications, handling both client systems and database servers.",
-    streams: ["Science"],
-    interests: ["Technology & Coding", "Mathematics & Logic"],
-    aiRisk: "High", aiRiskPercent: 55,
-    aiRiskDesc: "AI generates basic boilerplate code blocks, but building unique architecture and creative problem-solving remains a human task.",
-    difficulty: "Moderate", difficultyPercent: 60,
-    difficultyDesc: "Accessible with practice, but keeping up with evolving languages and system tools requires non-stop learning.",
-    demand: "High", workHours: "40-50 hrs/week",
-    keywords: ["b.tech", "cse", "coding", "software developer", "computer science"],
-    skills: ["JavaScript/TypeScript", "System Design", "Database Management", "Cloud Architectures"],
-    salary: { entry: "6-14 LPA", mid: "18-35 LPA", senior: "45-90+ LPA" }
-  },
-  {
-    id: "data-scientist",
-    title: "Data Scientist / AI Engineer",
-    description: "Builds complex machine learning algorithms and math models to train predictive systems and large language models.",
-    streams: ["Science"],
-    interests: ["Data & Analytics", "Technology & Coding", "Mathematics & Logic"],
-    aiRisk: "Low", aiRiskPercent: 15,
-    aiRiskDesc: "As the creators of AI frameworks, these engineers remain heavily insulated from automation risks.",
-    difficulty: "Hard", difficultyPercent: 78,
-    difficultyDesc: "Demands an exceptionally deep understanding of calculus, linear algebra, statistics, and programming languages.",
-    demand: "High", workHours: "40-55 hrs/week",
-    keywords: ["ai", "machine learning", "data science", "b.tech cse", "python"],
-    skills: ["Python/R", "Deep Learning", "Predictive Analytics", "Advanced Statistics"],
-    salary: { entry: "8-16 LPA", mid: "22-45 LPA", senior: "55-120+ LPA" }
-  },
-
-  // --- PSYCHOLOGY & HUMAN BEHAVIOR ---
-  {
-    id: "clinical-psychologist",
-    title: "Clinical Psychologist",
-    description: "Diagnoses and provides evidence-based therapies for emotional, behavioral, and mental health challenges.",
-    streams: ["Arts/Humanities", "Science"],
-    interests: ["Psychology & People", "Healthcare"],
-    aiRisk: "Low", aiRiskPercent: 10,
-    aiRiskDesc: "Deep empathy, therapeutic bonds, and reading non-verbal emotional cues cannot be emulated by software models.",
-    difficulty: "Hard", difficultyPercent: 70,
-    difficultyDesc: "Requires an MA/M.Sc followed by an RCI-approved M.Phil or Psy.D to legally practice in India.",
-    demand: "High", workHours: "35-45 hrs/week",
-    keywords: ["psychology", "ba psychology", "clinical", "therapy", "counseling"],
-    skills: ["Psychotherapy", "Diagnostic Assessment", "Active Listening", "Empathy"],
-    salary: { entry: "4-6 LPA", mid: "10-18 LPA", senior: "22-45+ LPA" }
-  },
-
-  // --- DESIGN & ARTS ---
-  {
-    id: "ui-ux-designer",
-    title: "UI/UX Product Designer",
-    description: "Shapes the digital presentation, visual flow, layouts, and accessibility experiences of apps and websites.",
-    streams: ["Arts/Humanities", "Commerce", "Science"],
-    interests: ["Design & Creativity", "Technology & Coding"],
-    aiRisk: "Medium", aiRiskPercent: 30,
-    aiRiskDesc: "AI speeds up standard asset layout designs, but understanding human user friction requires intuitive creative direction.",
-    difficulty: "Moderate", difficultyPercent: 50,
-    difficultyDesc: "Relies more on building a compelling visual portfolio of practical design work than high institutional exams.",
-    demand: "High", workHours: "40-50 hrs/week",
-    keywords: ["design", "ui ux", "b.des", "figma", "product designer"],
-    skills: ["Figma/Adobe", "User Research", "Wireframing", "Interaction Design"],
-    salary: { entry: "5-9 LPA", mid: "14-25 LPA", senior: "35-65+ LPA" }
-  },
-
-  // --- MEDIA & COMMUNICATION ---
-  {
-    id: "journalist",
-    title: "Journalist / Media Anchor",
-    description: "Investigates current events, reports news stories, and hosts public broadcasts across television and digital networks.",
-    streams: ["Arts/Humanities", "Commerce"],
-    interests: ["Writing & Communication", "Media & Content"],
-    aiRisk: "Medium", aiRiskPercent: 45,
-    aiRiskDesc: "AI can draft basic factual bulletins, but field reporting, live interviewing, and investigative journalism require human grit.",
-    difficulty: "Moderate", difficultyPercent: 55,
-    difficultyDesc: "Requires building trust, a unique vocal presence, and working through high-pressure breaking news situations.",
-    demand: "Moderate", workHours: "45-60 hrs/week",
-    keywords: ["bjmc", "journalism", "mass communication", "media"],
-    skills: ["Investigative Reporting", "Public Speaking", "Script Writing", "Video Production"],
-    salary: { entry: "3-6 LPA", mid: "8-18 LPA", senior: "25-60+ LPA" }
-  }
-]
+export const careersData: Record<Stream, Career[]> = {
+  "Science": [
+    {
+      title: "Software Engineer / Developer",
+      description: "Designs, builds, and maintains software applications, operating systems, and core digital systems.",
+      salaryRange: { min: 6, max: 35 },
+      degrees: ["B.Tech CSE", "B.E. Computer Science", "BCA", "B.Sc Computer Science"],
+      tasks: ["Write clean application code", "Debug production systems", "Architect database schemas", "Review peer merge requests"],
+      tags: ["Computer Science & Tech", "Engineering"]
+    },
+    {
+      title: "Data Scientist & AI Specialist",
+      description: "Analyzes massive infrastructure datasets and builds machine learning pipelines to solve complex problems.",
+      salaryRange: { min: 8, max: 40 },
+      degrees: ["B.Tech Data Science", "B.Sc Statistics", "B.Tech CSE"],
+      tasks: ["Train predictive ML models", "Clean noisy database pipelines", "Design analytical dashboards", "Deploy statistical neural networks"],
+      tags: ["Computer Science & Tech", "Engineering"]
+    },
+    {
+      title: "Mechanical Engineer",
+      description: "Designs, manufactures, and tests mechanical sensors, thermal devices, and heavy machinery automation.",
+      salaryRange: { min: 4, max: 18 },
+      degrees: ["B.Tech Mechanical Engineering", "B.E. Mechanical"],
+      tasks: ["Develop structural CAD models", "Run thermal simulation profiles", "Oversee production assembly lines", "Prototype robotic joints"],
+      tags: ["Engineering"]
+    },
+    {
+      title: "Civil Engineer",
+      description: "Plans, designs, and supervises construction operations for public infrastructure, roads, and bridges.",
+      salaryRange: { min: 4, max: 15 },
+      degrees: ["B.Tech Civil Engineering", "B.E. Civil"],
+      tasks: ["Review structural blueprints", "Calculate load-bearing limits", "Survey construction job sites", "Manage raw material logistics"],
+      tags: ["Engineering"]
+    },
+    {
+      title: "Electrical & Electronics Engineer",
+      description: "Designs components for power generation transmission, smart embedded electronics, and consumer hardware.",
+      salaryRange: { min: 5, max: 22 },
+      degrees: ["B.Tech Electrical", "B.Tech ECE"],
+      tasks: ["Design integrated circuit PCBs", "Program low-level microcontrollers", "Simulate signal processing setups", "Audit electrical safety systems"],
+      tags: ["Engineering", "Computer Science & Tech"]
+    },
+    {
+      title: "Medical Practitioner (Doctor)",
+      description: "Diagnoses illnesses, prescribes systemic medications, and performs medical interventions to heal patients.",
+      salaryRange: { min: 9, max: 50 },
+      degrees: ["MBBS"],
+      tasks: ["Examine incoming clinic patients", "Prescribe diagnostic lab tests", "Formulate medical treatment plans", "Perform surgical interventions"],
+      tags: ["Medicine & Biology"]
+    },
+    {
+      title: "Pharmacist / Pharmaceutical Scientist",
+      description: "Compounds chemical prescriptions, conducts medical batch testing, and handles regulatory pharmacy oversight.",
+      salaryRange: { min: 3.5, max: 12 },
+      degrees: ["B.Pharm", "Pharm.D"],
+      tasks: ["Dispense therapeutic medications", "Conduct stability testing", "Monitor inventory and cold chains", "Review patient allergy conflicts"],
+      tags: ["Medicine & Biology"]
+    },
+    {
+      title: "Biotechnology Researcher",
+      description: "Applies cellular and biomolecular principles to create healthcare, industrial, and agricultural solutions.",
+      salaryRange: { min: 4.5, max: 16 },
+      degrees: ["B.Tech Biotechnology", "B.Sc Microbiology"],
+      tasks: ["Isolate cellular DNA chains", "Run biochemical assays", "Document clinical lab experiments", "Engineer synthetic enzymes"],
+      tags: ["Medicine & Biology"]
+    },
+    {
+      title: "Aerospace Engineer",
+      description: "Researches, builds, and verifies operating tolerances for commercial aircraft, satellites, and spacecraft.",
+      salaryRange: { min: 6, max: 28 },
+      degrees: ["B.Tech Aerospace Engineering"],
+      tasks: ["Test aerodynamics in wind tunnels", "Calculate orbital launch vectors", "Evaluate composite hull stress", "Program flight control systems"],
+      tags: ["Engineering"]
+    },
+    {
+      title: "Environmental Scientist",
+      description: "Conducts data-driven field research to eliminate localized pollution and consults on sustainable green initiatives.",
+      salaryRange: { min: 4, max: 11 },
+      degrees: ["B.Sc Environmental Science", "B.Tech Environmental"],
+      tasks: ["Collect ecosystem water samples", "Draft environmental impact briefs", "Monitor localized air quality indices", "Consult on green waste setups"],
+      tags: ["Medicine & Biology"]
+    }
+  ],
+  "Commerce": [
+    {
+      title: "Chartered Accountant (CA)",
+      description: "Manages statutory corporate audits, deep tax optimization schemes, and official financial accounting systems.",
+      salaryRange: { min: 8, max: 30 },
+      degrees: ["B.Com + CA Qualification"],
+      tasks: ["Perform corporate ledger audits", "File direct and indirect corporate taxes", "Analyze fiscal balance sheets", "Advise on asset structuring"],
+      tags: ["Commerce & B.Com"]
+    },
+    {
+      title: "Investment Banker",
+      description: "Advises enterprise organizations on capital raising configurations, complex asset valuations, and mergers.",
+      salaryRange: { min: 10, max: 45 },
+      degrees: ["BBA Finance", "B.Com Hons", "BFIA"],
+      tasks: ["Build financial forecast sheets", "Pitch equity restructuring packages", "Conduct target due diligence", "Draft M&A transition memos"],
+      tags: ["Management & BBA", "Commerce & B.Com", "Economics"]
+    },
+    {
+      title: "Financial Risk Analyst",
+      description: "Measures and mitigates operational, market, and credit risk exposures using quantitative financial software.",
+      salaryRange: { min: 6, max: 22 },
+      degrees: ["B.Com", "B.Sc Actuarial Science", "BA Economics"],
+      tasks: ["Calculate portfolio Value-at-Risk", "Stress-test capital reserves", "Monitor market pricing fluctuations", "Draft risk mitigation rules"],
+      tags: ["Commerce & B.Com", "Economics"]
+    },
+    {
+      title: "Management Consultant",
+      description: "Evaluates standard corporate workflows to redesign operational systems and unlock organizational efficiency.",
+      salaryRange: { min: 7, max: 28 },
+      degrees: ["BBA", "B.Com Hons", "BMS"],
+      tasks: ["Interview business team leaders", "Analyze corporate cost overheads", "Present strategic structural changes", "Optimize supply chain networks"],
+      tags: ["Management & BBA"]
+    },
+    {
+      title: "Corporate Secretary (CS)",
+      description: "Ensures the enterprise fully obeys all board protocols, statutory disclosures, and regulatory laws.",
+      salaryRange: { min: 5.5, max: 18 },
+      degrees: ["B.Com + CS Professional Certification"],
+      tasks: ["Record board meeting minutes", "File regulatory compliance forms", "Draft corporate bylaws", "Advise directors on legal duties"],
+      tags: ["Commerce & B.Com", "Law & Legal Studies"]
+    },
+    {
+      title: "Human Resource Manager",
+      description: "Directs employee hiring parameters, talent retention guidelines, and comprehensive performance frameworks.",
+      salaryRange: { min: 4, max: 14 },
+      degrees: ["BBA HR", "BMS", "B.Com"],
+      tasks: ["Coordinate executive recruitment", "Design internal training tracks", "Mediate workforce grievances", "Administer payroll benefits"],
+      tags: ["Management & BBA", "Psychology & Human Behavior"]
+    },
+    {
+      title: "Marketing Manager / Brand Strategist",
+      description: "Drives multi-channel brand positioning setups, user acquisition spending, and modern advertising campaigns.",
+      salaryRange: { min: 5, max: 20 },
+      degrees: ["BBA Marketing", "B.Com", "BMM"],
+      tasks: ["Allocate monthly ad spend", "Review customer engagement data", "Approve campaign visual briefs", "Coordinate public relation channels"],
+      tags: ["Management & BBA", "Media & Mass Communication"]
+    },
+    {
+      title: "Stock Broker & Portfolio Manager",
+      description: "Executes target public market equities trading and balances diversified investment portfolios for clients.",
+      salaryRange: { min: 5, max: 25 },
+      degrees: ["B.Com Finance", "BBA", "BA Economics"],
+      tasks: ["Execute live asset trades", "Track global macroeconomic trends", "Rebalance private wealth funds", "Deliver client performance reviews"],
+      tags: ["Commerce & B.Com", "Economics"]
+    },
+    {
+      title: "Product Manager",
+      description: "Bridges engineering constraints and business requirements to ship functional software enhancements.",
+      salaryRange: { min: 8, max: 32 },
+      degrees: ["BBA", "BMS", "B.Com Hons"],
+      tasks: ["Draft product roadmap specs", "Analyze user interaction metrics", "Coordinate engineering sprint schedules", "Validate UX mockups"],
+      tags: ["Management & BBA", "Computer Science & Tech"]
+    },
+    {
+      title: "Supply Chain & Logistics Analyst",
+      description: "Controls the global movement of physical inventory from material sourcing lines to user fulfillment centers.",
+      salaryRange: { min: 4, max: 13 },
+      degrees: ["BBA Logistics", "B.Com"],
+      tasks: ["Negotiate wholesale vendor rates", "Track freight shipping windows", "Analyze warehouse storage capacity", "Minimize distribution bottlenecks"],
+      tags: ["Management & BBA"]
+    }
+  ],
+  "Arts/Humanities": [
+    {
+      title: "Corporate & Litigation Lawyer",
+      description: "Defends client legal interests, files structured court pleadings, and prepares complex corporate contracts.",
+      salaryRange: { min: 6, max: 30 },
+      degrees: ["BA LL.B.", "BBA LL.B.", "LL.B."],
+      tasks: ["Draft commercial transactions", "Argue client motions in court", "Conduct jurisprudence research", "Negotiate out-of-court settlements"],
+      tags: ["Law & Legal Studies"]
+    },
+    {
+      title: "Clinical Psychologist / Therapist",
+      description: "Evaluates psychological conditions, administers cognitive diagnostics, and runs targeted counseling pathways.",
+      salaryRange: { min: 4, max: 15 },
+      degrees: ["BA Psychology", "B.Sc Clinical Psychology", "MA Psychology"],
+      tasks: ["Conduct cognitive examinations", "Facilitate talk therapy courses", "Formulate behavior interventions", "Document patient case progress"],
+      tags: ["Psychology & Human Behavior"]
+    },
+    {
+      title: "Economist & Policy Advisor",
+      description: "Models micro/macroeconomic metrics, runs predictive market surveys, and designs public policy parameters.",
+      salaryRange: { min: 7, max: 26 },
+      degrees: ["BA Economics Hons", "B.Sc Economics"],
+      tasks: ["Analyze inflation index metrics", "Draft fiscal policy impact briefs", "Run econometric regression sets", "Publish research papers"],
+      tags: ["Economics"]
+    },
+    {
+      title: "Journalist & News Anchor",
+      description: "Investigates breaking stories, verifies source networks, and broadcasts accurate analytical multimedia news packages.",
+      salaryRange: { min: 3.5, max: 14 },
+      degrees: ["BJMC", "BA Journalism", "Mass Communication"],
+      tasks: ["Investigate field leads", "Conduct on-camera interviews", "Draft text editorial articles", "Edit broadcast video stories"],
+      tags: ["Media & Mass Communication"]
+    },
+    {
+      title: "UX/UI Designer",
+      description: "Maps interactive digital screen flows, structures wireframe mockups, and validates end-to-end user testing panels.",
+      salaryRange: { min: 5, max: 24 },
+      degrees: ["B.Des Communication", "BFA", "BA Digital Design"],
+      tasks: ["Build functional Figma mockups", "Map user journeys", "Conduct structural usability checks", "Maintain brand UI kit tokens"],
+      tags: ["Design & Arts", "Computer Science & Tech"]
+    },
+    {
+      title: "Civil Services Officer (IAS / IFS / IPS)",
+      description: "Administers systemic public policies, maintains law enforcement stability, and manages civic infrastructure systems.",
+      salaryRange: { min: 7, max: 15 },
+      degrees: ["Any Bachelor's Degree + UPSC Civil Services Clearance"],
+      tasks: ["Enforce localized zoning codes", "Supervise district budget drops", "Coordinate crisis rescue responses", "Review civic infrastructure work"],
+      tags: ["Law & Legal Studies", "Psychology & Human Behavior"]
+    },
+    {
+      title: "Public Relations Specialist",
+      description: "Manages outbound corporate messaging portfolios, fields media requests, and maintains strategic reputation setups.",
+      salaryRange: { min: 4, max: 16 },
+      degrees: ["BA Mass Communication", "BMM"],
+      tasks: ["Draft official corporate releases", "Pitch narrative angles to media", "Organize executive press panels", "Resolve brand PR crises"],
+      tags: ["Media & Mass Communication", "Management & BBA"]
+    },
+    {
+      title: "Content Strategist & Copywriter",
+      description: "Develops text assets for corporate conversion funnels, script frameworks, and digital brand collateral channels.",
+      salaryRange: { min: 3, max: 11 },
+      degrees: ["BA English", "BA Journalism", "BMM"],
+      tasks: ["Write marketing landing pages", "Brainstorm creative ad copies", "Optimize articles for SEO rankings", "Audit consistent tone systems"],
+      tags: ["Media & Mass Communication", "Design & Arts"]
+    },
+    {
+      title: "Creative Director / Animator",
+      description: "Supervises narrative conceptual styling frameworks, structural 3D animation rigs, and general multimedia creation sets.",
+      salaryRange: { min: 4.5, max: 22 },
+      degrees: ["B.Des Animation", "BFA"],
+      tasks: ["Storyboard commercial video loops", "Animate keyframes in production", "Direct artistic asset sets", "Review lighting compositing layers"],
+      tags: ["Design & Arts"]
+    },
+    {
+      title: "Sociologist & Anthropologist",
+      description: "Studies human cultural groups, evolutionary societal behaviors, and institutional interactions through fieldwork.",
+      salaryRange: { min: 4, max: 12 },
+      degrees: ["BA Sociology", "MA Anthropology"],
+      tasks: ["Conduct observational field interviews", "Analyze demographic metrics", "Draft qualitative social papers", "Consult on development grants"],
+      tags: ["Psychology & Human Behavior"]
+    }
+  ]
+}
