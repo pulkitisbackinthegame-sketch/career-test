@@ -1,25 +1,22 @@
-"use client"
-
-import { CareerFinderUI } from "@/components/career-finder"
+import { SiteHero } from "@/components/site-hero"
+import { FounderSection } from "@/components/founder-section"
+import { CareerFinder } from "@/components/career-finder"
 import { CollegeFinderUI } from "@/components/college-finder"
 
-export default function Home() {
+export default function Page() {
   return (
-    <main className="min-h-screen bg-background text-foreground py-12 px-4 space-y-16">
-      <div className="max-w-3xl mx-auto text-center space-y-4">
-        <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl">
-          Decision Engine
-        </h1>
-        <p className="text-xl text-muted-foreground">
-          Analyze career routing matrices and college entries below.
+    <main className="min-h-screen bg-background">
+      <SiteHero />
+      <FounderSection />
+      <CareerFinder />
+      <CollegeFinderUI />
+      
+      <footer className="bg-primary py-8 text-center text-sm text-primary-foreground/70">
+        <p>PathFinder — built by Pulkit Malik to help students choose with clarity.</p>
+        <p className="mt-1 text-xs text-primary-foreground/50">
+          Salary, demand and AI-risk figures are indicative estimates for guidance only.
         </p>
-      </div>
-
-      <div className="space-y-20">
-        <CareerFinderUI />
-        <div className="border-t border-border my-8" />
-        <CollegeFinderUI />
-      </div>
+      </footer>
     </main>
   )
 }
