@@ -4,7 +4,7 @@ import { useState } from "react"
 import { Briefcase, GraduationCap, TrendingUp } from "lucide-react"
 import { Button } from "./ui/button"
 import { type Stream, type Career, careersData } from "../lib/career-data"
-import { FieldLabel, StreamSelect, ChipMultiSelect } from "./finder-control"
+import { FieldLabel, StreamSelect, ChipMultiSelect } from "./finder-controls"
 
 export interface CareerMatch {
   career: Career
