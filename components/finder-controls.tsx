@@ -1,49 +1,29 @@
 "use client"
 
-import { Check } from "lucide-react"
-import type { Stream } from "@/lib/career-data"
-import { STREAMS } from "@/lib/career-data"
-import { cn } from "@/lib/utils"
+import * as React from "react"
 
-export function FieldLabel({
-  children,
-  optional,
-}: {
-  children: React.ReactNode
-  optional?: boolean
-}) {
+export function FieldLabel({ children, optional }: { children: React.ReactNode; optional?: boolean }) {
   return (
-    <label className="mb-2 flex items-center gap-2 text-sm font-semibold text-foreground">
-      {children}
-      {optional && (
-        <span className="rounded-full bg-secondary px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
-          optional
-        </span>
-      )}
+    <label className="block text-sm font-bold tracking-tight text-foreground mb-2">
+      {children} {optional && <span className="text-xs font-normal text-muted-foreground">(Optional)</span>}
     </label>
   )
 }
 
-export function StreamSelect({
-  value,
-  onChange,
-}: {
-  value: Stream | null
-  onChange: (s: Stream) => void
-}) {
+export function StreamSelect({ value, onChange }: { value: string | null; onChange: (v: any) => void }) {
+  const streams = ["Science", "Commerce", "Arts/Humanities"]
   return (
-    <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
-      {STREAMS.map((s) => (
+    <div className="grid grid-cols-3 gap-2">
+      {streams.map((s) => (
         <button
           key={s}
           type="button"
           onClick={() => onChange(s)}
-          className={cn(
-            "rounded-xl border px-4 py-3 text-sm font-medium transition-colors",
-            value === s
-              ? "border-primary bg-primary text-primary-foreground"
-              : "border-border bg-background text-foreground hover:border-primary/40",
-          )}
+          className={`rounded-xl border p-3 text-xs font-bold transition-all ${
+            value === s 
+              ? "border-primary bg-primary/10 text-primary" 
+              : "border-border bg-background text-muted-foreground hover:bg-accent"
+          }`}
         >
           {s}
         </button>
@@ -52,32 +32,22 @@ export function StreamSelect({
   )
 }
 
-export function ChipMultiSelect({
-  options,
-  selected,
-  onToggle,
-}: {
-  options: string[]
-  selected: string[]
-  onToggle: (value: string) => void
-}) {
+export function ChipMultiSelect({ options, selected, onToggle }: { options: string[]; selected: string[]; onToggle: (v: string) => void }) {
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap gap-1.5">
       {options.map((opt) => {
-        const isOn = selected.includes(opt)
+        const isSelected = selected.includes(opt)
         return (
           <button
             key={opt}
             type="button"
             onClick={() => onToggle(opt)}
-            className={cn(
-              "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
-              isOn
-                ? "border-primary bg-accent text-accent-foreground"
-                : "border-border bg-background text-foreground hover:border-primary/40",
-            )}
+            className={`rounded-full border px-3 py-1 text-xs font-medium transition-all ${
+              isSelected
+                ? "border-primary bg-primary text-primary-foreground"
+                : "border-border bg-background text-muted-foreground hover:bg-accent"
+            }`}
           >
-            {isOn && <Check className="size-3.5" aria-hidden="true" />}
             {opt}
           </button>
         )
@@ -86,54 +56,35 @@ export function ChipMultiSelect({
   )
 }
 
-export function YesNoToggle({
-  value,
-  onChange,
-}: {
-  value: boolean
-  onChange: (v: boolean) => void
-}) {
+export function YesNoToggle({ value, onChange }: { value: boolean; onChange: (v: boolean) => void }) {
   return (
-    <div className="inline-flex rounded-xl border border-border bg-background p-1">
-      {[
-        { label: "Yes", v: true },
-        { label: "No", v: false },
-      ].map((opt) => (
-        <button
-          key={opt.label}
-          type="button"
-          onClick={() => onChange(opt.v)}
-          className={cn(
-            "rounded-lg px-5 py-1.5 text-sm font-medium transition-colors",
-            value === opt.v ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground",
-          )}
-        >
-          {opt.label}
-        </button>
-      ))}
+    <div className="flex gap-2">
+      <button
+        type="button"
+        onClick={() => onChange(true)}
+        className={`rounded-lg px-3 py-1.5 text-xs font-semibold border ${value ? "bg-primary text-primary-foreground border-primary" : "bg-background border-border text-muted-foreground"}`}
+      >
+        Yes
+      </button>
+      <button
+        type="button"
+        onClick={() => onChange(false)}
+        className={`rounded-lg px-3 py-1.5 text-xs font-semibold border ${!value ? "bg-primary text-primary-foreground border-primary" : "bg-background border-border text-muted-foreground"}`}
+      >
+        No
+      </button>
     </div>
   )
 }
 
-export function TextField({
-  value,
-  onChange,
-  placeholder,
-  id,
-}: {
-  value: string
-  onChange: (v: string) => void
-  placeholder?: string
-  id?: string
-}) {
+export function TextField({ value, onChange, placeholder }: { value: string; onChange: (v: string) => void; placeholder?: string }) {
   return (
     <input
-      id={id}
       type="text"
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
-      className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-ring/30"
+      className="w-full rounded-xl border border-border bg-background px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-1 focus:ring-primary"
     />
   )
 }
