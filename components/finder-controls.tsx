@@ -16,7 +16,6 @@ export function StreamSelect({ value, onChange }: { value: string | null; onChan
   return (
     <div className="grid grid-cols-3 gap-2">
       {streams.map((s) => {
-        // Completely avoiding the ? conditional to stop hidden character errors
         let buttonClass = "border-border bg-background text-muted-foreground hover:bg-accent"
         if (value === s) {
           buttonClass = "border-primary bg-primary/10 text-primary"
@@ -97,8 +96,8 @@ export function TextField({ value, onChange, placeholder }: { value: string; onC
       type="text"
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      placeholder={placeholder}
-      className="w-full rounded-xl border border-border bg-background px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-1 focus:ring-primary"
+      placeholder={placeholder || ""}
+      className="w-full rounded-xl border border-border bg-background px-3 py-2.5 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
     />
   )
 }
