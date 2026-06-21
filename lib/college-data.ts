@@ -46,7 +46,7 @@ export const FIELD_OPTIONS = [
   "Media & Communication",
 ]
 
-export const collegesData: College[] = [
+export const colleges: College[] = [
   {
     id: "srcc",
     name: "Shri Ram College of Commerce (DU)",
@@ -266,90 +266,65 @@ export type AdmissionChance = "High" | "Moderate" | "Low" | null
 
 export interface CollegeInput {
   stream: Stream
-  userCity: string
-  willingToMove: boolean
   interests: string[]
-  cuetScore?: number | null
+  livesOutOfCity: boolean
+  /** Optional CUET percentile the student expects/scored (0–100) */
+  cuetPercentile?: number | null
 }
 
 export interface CollegeMatch {
   college: College
-  matchScore: number
+  matchPercent: number
   yearlyTuition: number
   yearlyLiving: number
   yearlyMisc: number
   yearlyTotal: number
-  reasons: string[]
+  admissionChance: AdmissionChance
+}
+
+function estimateChance(college: College, cuet?: number | null): AdmissionChance {
+  if (cuet == null || Number.isNaN(cuet) || college.cuetCutoff == null) return null
+  if (cuet >= college.cuetCutoff) return "High"
+  if (cuet >= college.cuetCutoff - 3) return "Moderate"
+  return "Low"
 }
 
 export function matchColleges(input: CollegeInput): CollegeMatch[] {
-  const eligibleColleges = colleges.filter((college) =>
-    college.streams.includes(input.stream)
-  )
+  return colleges
+    .filter((c) => c.streams.includes(input.stream))
+    .map((college) => {
+      let weight = 0
+      let score = 0
 
-  const results: CollegeMatch[] = eligibleColleges.map((college) => {
-    let score = 50 
-    const reasons: string[] = []
-    const isSameCity = college.city.toLowerCase().trim() === input.userCity.toLowerCase().trim()
+      // Stream fit
+      weight += 30
+      score += 30 * (college.streams[0] === input.stream ? 1 : 0.6)
 
-    // City Logic
-    if (!input.willingToMove) {
-      if (isSameCity) {
-        score += 40
-        reasons.push(`Located right in your home city (${college.city}).`)
-      } else {
-        score -= 45 
+      // Interest fit — measured against how much of the college's strength profile you cover
+      if (input.interests.length > 0) {
+        weight += 50
+        const hits = input.interests.filter((i) => college.interests.includes(i))
+        const ratio = Math.min(1, hits.length / college.interests.length)
+        score += 50 * ratio
       }
-    } else {
-      if (isSameCity) {
-        score += 15
-        reasons.push(`Local option in ${college.city}.`)
-      } else {
-        score += 10
-        reasons.push(`Great out-of-station option in ${college.city}.`)
+
+      const base = weight > 0 ? (score / weight) * 100 : 0
+      const matchPercent = Math.max(20, Math.min(97, Math.round(base * 0.94)))
+
+      const yearlyTuition = Math.round(college.fee / college.durationYears)
+      const yearlyLiving = input.livesOutOfCity ? college.livingExpense : 0
+      const yearlyMisc = MISC_PER_YEAR
+      const yearlyTotal = yearlyTuition + yearlyLiving + yearlyMisc
+
+      return {
+        college,
+        matchPercent,
+        yearlyTuition,
+        yearlyLiving,
+        yearlyMisc,
+        yearlyTotal,
+        admissionChance: estimateChance(college, input.cuetPercentile),
       }
-    }
-
-    // Interests Logic
-    const matchingFields = input.interests.filter((field) =>
-      college.interests.includes(field)
-    )
-    if (matchingFields.length > 0) {
-      score += 15
-      reasons.push(`Renowned for fields like: ${matchingFields.slice(0, 2).join(", ")}.`)
-    }
-
-    // CUET Logic
-    if (input.cuetScore && college.cuetCutoff) {
-      if (input.cuetScore >= college.cuetCutoff) {
-        score += 10
-        reasons.push(`Your CUET score meets or exceeds historical cutoffs.`)
-      } else if (input.cuetScore >= college.cuetCutoff - 5) {
-        score += 2
-        reasons.push(`Borders on expected eligibility limits; competitive profile required.`)
-      } else {
-        score -= 30 
-      }
-    }
-
-    const matchScore = Math.max(0, Math.min(100, score))
-    
-    // Financial breakdowns derived perfectly for your display layouts
-    const yearlyTuition = Math.round(college.fee / college.durationYears)
-    const yearlyLiving = (!isSameCity || input.willingToMove) ? college.livingExpense : 0
-    const yearlyMisc = MISC_PER_YEAR
-    const yearlyTotal = yearlyTuition + yearlyLiving + yearlyMisc
-
-    return { 
-      college, 
-      matchScore, 
-      yearlyTuition,
-      yearlyLiving,
-      yearlyMisc,
-      yearlyTotal,
-      reasons 
-    }
-  })
-
-  return results.sort((a, b) => b.matchScore - a.matchScore)
+    })
+    .sort((a, b) => b.matchPercent - a.matchPercent)
 }
