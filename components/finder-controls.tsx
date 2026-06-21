@@ -5,28 +5,28 @@ import * as React from "react"
 export function FieldLabel({ children, optional }: { children: React.ReactNode; optional?: boolean }) {
   return (
     <label className="block text-sm font-bold tracking-tight text-foreground mb-2">
-      {children} {optional && <span className="text-xs font-normal text-muted-foreground">(Optional)</span>}
+      {children}
+      {optional && <span className="text-xs font-normal text-muted-foreground">(Optional)</span>}
     </label>
   )
 }
 
 export function StreamSelect({ value, onChange }: { value: string | null; onChange: (v: any) => void }) {
-  const streams = ["Science", "Commerce", "Arts/Humanities"]
+  const streams = ["Science", "Commerce", "Arts"]
   
   return (
     <div className="grid grid-cols-3 gap-2">
       {streams.map((s) => {
-        let buttonClass = "border-border bg-background text-muted-foreground hover:bg-accent"
+        let btnClass = "border-border"
         if (value === s) {
-          buttonClass = "border-primary bg-primary/10 text-primary"
+          btnClass = "border-primary"
         }
-
         return (
           <button
             key={s}
             type="button"
             onClick={() => onChange(s)}
-            className={`rounded-xl border p-3 text-xs font-bold transition-all ${buttonClass}`}
+            className={`rounded-xl border p-3 text-xs font-bold ${btnClass}`}
           >
             {s}
           </button>
@@ -38,19 +38,18 @@ export function StreamSelect({ value, onChange }: { value: string | null; onChan
 
 export function ChipMultiSelect({ options, selected, onToggle }: { options: string[]; selected: string[]; onToggle: (v: string) => void }) {
   return (
-    <div className="flex flex-wrap gap-1.5">
+    <div className="flex flex-wrap gap-2">
       {options.map((opt) => {
-        let chipClass = "border-border bg-background text-muted-foreground hover:bg-accent"
+        let chipClass = "border-border"
         if (selected.includes(opt)) {
-          chipClass = "border-primary bg-primary text-primary-foreground"
+          chipClass = "border-primary"
         }
-
         return (
           <button
             key={opt}
             type="button"
             onClick={() => onToggle(opt)}
-            className={`rounded-full border px-3 py-1 text-xs font-medium transition-all ${chipClass}`}
+            className={`rounded-full border px-3 py-1 text-xs font-medium ${chipClass}`}
           >
             {opt}
           </button>
@@ -61,43 +60,32 @@ export function ChipMultiSelect({ options, selected, onToggle }: { options: stri
 }
 
 export function YesNoToggle({ value, onChange }: { value: boolean; onChange: (v: boolean) => void }) {
-  let yesClass = "bg-background border-border text-muted-foreground"
-  let noClass = "bg-background border-border text-muted-foreground"
-
+  let yClass = "border-border"
+  let nClass = "border-border"
   if (value) {
-    yesClass = "bg-primary text-primary-foreground border-primary"
+    yClass = "border-primary"
   } else {
-    noClass = "bg-primary text-primary-foreground border-primary"
+    nClass = "border-primary"
   }
-
   return (
     <div className="flex gap-2">
-      <button
-        type="button"
-        onClick={() => onChange(true)}
-        className={`rounded-lg px-3 py-1.5 text-xs font-semibold border ${yesClass}`}
-      >
+      <button type="button" onClick={() => onChange(true)} className={`border p-2 text-xs ${yClass}`}>
         Yes
       </button>
-      <button
-        type="button"
-        onClick={() => onChange(false)}
-        className={`rounded-lg px-3 py-1.5 text-xs font-semibold border ${noClass}`}
-      >
+      <button type="button" onClick={() => onChange(false)} className={`border p-2 text-xs ${nClass}`}>
         No
       </button>
     </div>
   )
 }
 
-export function TextField({ value, onChange, placeholder }: { value: string; onChange: (v: string) => void; placeholder?: string }) {
+export function TextField({ value, onChange }: { value: string; onChange: (v: string) => void; placeholder?: string }) {
   return (
     <input
       type="text"
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      placeholder={placeholder || ""}
-      className="w-full rounded-xl border border-border bg-background px-3 py-2.5 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+      className="w-full rounded-xl border border-border px-3 py-2 text-sm text-foreground"
     />
   )
 }
