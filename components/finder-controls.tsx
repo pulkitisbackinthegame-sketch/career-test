@@ -17,16 +17,13 @@ export function StreamSelect({ value, onChange }: { value: string | null; onChan
   return (
     <div className="grid grid-cols-3 gap-2">
       {streams.map((s) => {
-        let btnClass = "border-border"
-        if (value === s) {
-          btnClass = "border-primary"
-        }
+        const isActive = value === s
         return (
           <button
             key={s}
             type="button"
             onClick={() => onChange(s)}
-            className={`rounded-xl border p-3 text-xs font-bold ${btnClass}`}
+            className={isActive ? "rounded-xl border p-3 text-xs font-bold border-primary" : "rounded-xl border p-3 text-xs font-bold border-border"}
           >
             {s}
           </button>
@@ -40,16 +37,13 @@ export function ChipMultiSelect({ options, selected, onToggle }: { options: stri
   return (
     <div className="flex flex-wrap gap-2">
       {options.map((opt) => {
-        let chipClass = "border-border"
-        if (selected.includes(opt)) {
-          chipClass = "border-primary"
-        }
+        const isSelected = selected.includes(opt)
         return (
           <button
             key={opt}
             type="button"
             onClick={() => onToggle(opt)}
-            className={`rounded-full border px-3 py-1 text-xs font-medium ${chipClass}`}
+            className={isSelected ? "rounded-full border px-3 py-1 text-xs font-medium border-primary" : "rounded-full border px-3 py-1 text-xs font-medium border-border"}
           >
             {opt}
           </button>
@@ -60,19 +54,20 @@ export function ChipMultiSelect({ options, selected, onToggle }: { options: stri
 }
 
 export function YesNoToggle({ value, onChange }: { value: boolean; onChange: (v: boolean) => void }) {
-  let yClass = "border-border"
-  let nClass = "border-border"
-  if (value) {
-    yClass = "border-primary"
-  } else {
-    nClass = "border-primary"
-  }
   return (
     <div className="flex gap-2">
-      <button type="button" onClick={() => onChange(true)} className={`border p-2 text-xs ${yClass}`}>
+      <button 
+        type="button" 
+        onClick={() => onChange(true)} 
+        className={value ? "border p-2 text-xs border-primary" : "border p-2 text-xs border-border"}
+      >
         Yes
       </button>
-      <button type="button" onClick={() => onChange(false)} className={`border p-2 text-xs ${nClass}`}>
+      <button 
+        type="button" 
+        onClick={() => onChange(false)} 
+        className={!value ? "border p-2 text-xs border-primary" : "border p-2 text-xs border-border"}
+      >
         No
       </button>
     </div>
